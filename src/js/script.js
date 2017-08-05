@@ -1,11 +1,6 @@
 $( document ).ready(function() {
 
-<!-- Menu Toggle Script -->
-$("#menu-toggle").click(function(e) {
-    e.preventDefault();
-    $("#wrapper").toggleClass("toggled");
-});
-
+    //model data
     let markerContainer = [
         {
             "position": {lat: 58.970936, lng: 5.732062},
@@ -29,7 +24,20 @@ $("#menu-toggle").click(function(e) {
         },
     ];
 
+
+
+
+<!-- Menu Toggle Script -->
+$("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+});
+
+
+
 function initMap() {
+
+    //create map
     let stavanger = {lat: 58.9700, lng: 5.7331};
     let map = new google.maps.Map(document.getElementById('map'), {
         zoom: 15,
@@ -43,8 +51,19 @@ function initMap() {
             map: map,
             title: markerContainer[i].title
         });
-    }
 
+    //add infowindows to markers
+        let infoWindow = new google.maps.InfoWindow({
+            content: markerContainer[i].title
+        });
+
+        marker.addListener('click', function() {
+            infoWindow.open(map, marker);
+        });
+
+        //append marker location to listview
+        $(".sidebar-nav").append('<li><a href="#">' + markerContainer[i].title + '</a></li>');
+    }
 }
 
 //initialize function
