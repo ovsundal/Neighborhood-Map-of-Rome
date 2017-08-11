@@ -12,14 +12,21 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Custom CSS -->
     <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 
 </head>
 <body>
 
 <div id="wrapper">
+
+
+
+    <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+
+
+
 
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
@@ -33,45 +40,61 @@
     <div id="page-content-wrapper">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-12">
+                <div id="map" class="col-lg-12">
 
-                    <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+
                 </div>
             </div>
         </div>
 
 
 
-        <ul data-bind="foreach: locationList">
-            <li>
-                <span data-bind="text: name, click: $parent.setLocation"></span>
-                <p data-bind="with: position">
-                    latitude: <span data-bind="text: lat"></span>,
-                    longitude: <span data-bind="text: lng"></span>
-                </p>
-            </li>
-        </ul>
+        <!--<ul data-bind="foreach: locationList">-->
+            <!--<li>-->
+                <!--<span data-bind="text: name, click: $parent.setLocation"></span>-->
+                <!--<p data-bind="with: position">-->
+                    <!--latitude: <span data-bind="text: lat"></span>,-->
+                    <!--longitude: <span data-bind="text: lng"></span>-->
+                <!--</p>-->
+            <!--</li>-->
+        <!--</ul>-->
 
-        <div>Currently selected location:
+        <!--<div>Currently selected location:-->
 
-            <p data-bind="with: currentLocation">
+            <!--<p data-bind="with: currentLocation">-->
 
-                name: <span data-bind="text: name"></span><br>
-                latitude: <span data-bind="text: position().lat"></span><br>
-                longitude: <span data-bind="text: position().lng"></span>
-            </p>
-        </div>
+                <!--name: <span data-bind="text: name"></span><br>-->
+                <!--latitude: <span data-bind="text: position().lat"></span><br>-->
+                <!--longitude: <span data-bind="text: position().lng"></span>-->
+            <!--</p>-->
+        <!--</div>-->
     </div>
     <!-- /#page-content-wrapper -->
 </div>
 <!-- /#wrapper -->
 
+<script>
 
 
+    //     //create map
+    //     let stavanger = {lat: 58.9700, lng: 5.7331};
+    //     let map = new google.maps.Map(document.getElementById('map'), {
+    //         zoom: 15,
+    //         center: stavanger
+    //     });
 
 
+    let map;
+    let stavanger = {lat: 58.9700, lng: 5.7331};
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: stavanger,
+            zoom: 15
+        });
+    }
+</script>
 
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeT6y8aANlhj_YEp863iwST2drIlpQ8vk&callback=initMap"></script>
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/knockout-3.4.2.js"></script>
@@ -85,8 +108,11 @@
 //    activate menu at startup
     $("#menu-toggle").click();
 
-
 </script>
+
+
+
+
 
 </body>
 </html>
