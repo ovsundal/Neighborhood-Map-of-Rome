@@ -12,14 +12,29 @@
 </head>
 <body>
 
-<ul data-bind="foreach: locationList">
-    <li>
-        <span data-bind="text: name"></span>
-        <div>
-            latitude: <span data-bind="text: position().lat"></span>
-            longitude: <span data-bind="text: position().lng"></span></div>
-    </li>
-</ul>
+
+
+
+
+    <ul data-bind="foreach: locationList">
+        <li>
+            <span data-bind="text: name, click: $parent.setLocation"></span>
+            <p data-bind="with: position">
+                latitude: <span data-bind="text: lat"></span>,
+                longitude: <span data-bind="text: lng"></span>
+            </p>
+        </li>
+    </ul>
+
+    <div>Currently selected location:
+
+        <p data-bind="with: currentLocation">
+
+            name: <span data-bind="text: name"></span><br>
+            latitude: <span data-bind="text: position().lat"></span><br>
+            longitude: <span data-bind="text: position().lng"></span>
+        </p>
+    </div>
 
 <script src="js/script.js"></script>
 

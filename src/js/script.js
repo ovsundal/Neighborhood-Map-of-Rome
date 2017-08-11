@@ -44,10 +44,16 @@ let ViewModel = function () {
 
     initialLocations.forEach(function(locationItem) {
         self.locationList.push(new Location(locationItem));
-        debugger;
     });
 
     this.currentLocation = ko.observable(this.locationList()[0]);
+
+    this.setLocation = function(clickedLocation) {
+
+        self.currentLocation(clickedLocation);
+
+    };
+
 };
 
 ko.applyBindings(new ViewModel());
