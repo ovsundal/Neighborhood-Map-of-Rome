@@ -42,30 +42,43 @@ let ViewModel = function () {
 
     let self = this;
 
-    this.locationList = ko.observableArray([]);
+    self.locationList = ko.observableArray([]);
 
     initialLocations.forEach(function(locationItem) {
         self.locationList.push(new Location(locationItem));
     });
 
-    this.currentLocation = ko.observable(this.locationList()[0]);
+    self.currentLocation = ko.observable(self.locationList()[0]);
 
-    this.setLocation = function(clickedLocation) {
+    self.setLocation = function(clickedLocation) {
         self.currentLocation(clickedLocation);
         self.addMarker(clickedLocation);
     };
 
 };
 
-ko.applyBindings(new ViewModel());
+let viewModel = new ViewModel();
+
+ko.applyBindings(viewModel);
 
 ViewModel.prototype.addMarker = function(location) {
+
+    console.log(location.name() + " clicked");
 
     let marker = new google.maps.Marker({
         position: new google.maps.LatLng(location.position()),
         map: map,
         title: "test"
     });
+};
+
+ViewModel.prototype.addListMarkers = function () {
+    console.log("inside addListMarkers");
+    debugger;
+    viewModel.locationList.forEach = function (location) {
+
+        location.addMarker(location);
+    }
 };
 
 //should i put this in modelview?
@@ -76,5 +89,7 @@ function initMap() {
         center: stavanger,
         zoom: 15
     });
+
+    viewModel.addListMarkers();
 }
 
