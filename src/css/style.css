@@ -6,6 +6,14 @@ html, body, #wrapper, .container-fluid, .row, #page-content-wrapper, #map {
     padding: 0;
 }
 
+li {
+    color: white;
+}
+
+#map {
+    width: 115%;
+}
+
 .floating-panel {
     position: absolute;
     top: 10px;
@@ -19,3 +27,9 @@ html, body, #wrapper, .container-fluid, .row, #page-content-wrapper, #map {
     line-height: 30px;
     padding-left: 10px;
 }
+
+.buttonVisible {
+    position: absolute;
+    margin-right: -250px;
+}
+

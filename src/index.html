@@ -19,12 +19,13 @@
 </head>
 <body>
 
-<div id="wrapper">
+<div id="wrapper" data-bind="css: { toggled: menuVisible() == true}">
 
-    <button class="btn btn-default floating-panel" id="menu-toggle">Toggle Menu</button>
+    <button class="btn btn-default floating-panel" id="menu-toggle"
+            data-bind="click: toggleMenu" >Toggle Menu</button>
 
     <!-- Sidebar -->
-    <div id="sidebar-wrapper">
+    <div id="sidebar-wrapper" >
         <ul class="sidebar-nav" data-bind="foreach: locationList">
             <li data-bind="text: name, click: $parent.setLocation"></li>
         </ul>
@@ -51,14 +52,14 @@
 <script async
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeT6y8aANlhj_YEp863iwST2drIlpQ8vk&callback=initMap"></script>
 
-<script>
-    $("#menu-toggle").click(function (e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    //    activate menu at startup
-    $("#menu-toggle").click();
+<!--<script>-->
+    <!--$("#menu-toggle").click(function (e) {-->
+        <!--e.preventDefault();-->
+        <!--$("#wrapper").toggleClass("toggled");-->
+    <!--});-->
+    <!--//    activate menu at startup-->
+    <!--$("#menu-toggle").click();-->
 
-</script>
+<!--</script>-->
 </body>
 </html>

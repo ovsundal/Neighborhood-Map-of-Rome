@@ -1,7 +1,6 @@
-// first goal: display a list with location names using Knockout.js (add the map later)
+'use strict';
 
 let map;
-
 let initialLocations = [
     {
         "position": {lat: 58.970936, lng: 5.732062},
@@ -42,8 +41,12 @@ let ViewModel = function () {
 
     let self = this;
 
-    self.locationList = ko.observableArray([]);
+    this.menuVisible = ko.observable(true);
+    this.toggleMenu = function () {
+        this.menuVisible(!this.menuVisible());
+    };
 
+    self.locationList = ko.observableArray([]);
     initialLocations.forEach(function(locationItem) {
         self.locationList.push(new Location(locationItem));
     });
@@ -54,13 +57,11 @@ let ViewModel = function () {
         self.currentLocation(clickedLocation);
         self.addMarker(clickedLocation);
     };
-
 };
 
-let viewModel = new ViewModel();
+ko.applyBindings(new ViewModel());
 
-ko.applyBindings(viewModel);
-
+//adds a marker to a location object
 ViewModel.prototype.addMarker = function(location) {
 
     console.log(location.name() + " clicked");
@@ -72,16 +73,6 @@ ViewModel.prototype.addMarker = function(location) {
     });
 };
 
-ViewModel.prototype.addListMarkers = function () {
-    console.log("inside addListMarkers");
-    debugger;
-    viewModel.locationList.forEach = function (location) {
-
-        location.addMarker(location);
-    }
-};
-
-//should i put this in modelview?
 function initMap() {
 
     let stavanger = {lat: 58.9700, lng: 5.7331};
@@ -90,6 +81,5 @@ function initMap() {
         zoom: 15
     });
 
-    viewModel.addListMarkers();
 }
 
