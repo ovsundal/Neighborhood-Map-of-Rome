@@ -38,17 +38,6 @@ class Location {
         };
         this.name = data.name;
         this.info = data.info;
-
-
-
-        //todo: implement marker as loc object
-        // this.marker = new google.maps.Marker({
-        //     position: this.position,
-        //     title: this.name,
-        //     map: map,
-        //     animation: google.maps.Animation.DROP
-        // });
-        //todo: implement infoview as loc object
     }
 }
 
@@ -106,6 +95,18 @@ let ViewModel = function () {
             });
         });
     }
+
+    self.createMarkers = function(item) {
+
+        item.marker =  new google.maps.Marker({
+            position: item.position,
+            title: item.name,
+            map: map,
+            animation: google.maps.Animation.DROP
+        });
+
+        //todo add listener with bounce onclick here
+    }
 };
 
 let viewModel = new ViewModel();
@@ -113,17 +114,20 @@ let viewModel = new ViewModel();
 ko.applyBindings(viewModel);
 
 //callback function for google map async load
+//QUESTION: Is this the right way to interact with viewmodel?
 window.mapCallback = function () {
     initMap();
 
-    //is this the right way to interact with viewmodel?
-    viewModel.populateMapWithMarkers();
+    //create markers
+    viewModel.locationList().forEach(function (item) {
+        viewModel.createMarkers(item);
+    });
 
 };
 
 function initMap() {
 
-    let stavanger = {lat: 58.9700, lng: 5.7331};
+    const stavanger = {lat: 58.9700, lng: 5.7331};
     map = new google.maps.Map(document.getElementById('map'), {
         center: stavanger,
         zoom: 15,
