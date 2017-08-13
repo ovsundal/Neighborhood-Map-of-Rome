@@ -41,36 +41,64 @@ let ViewModel = function () {
 
     let self = this;
 
-    this.menuVisible = ko.observable(true);
-    this.toggleMenu = function () {
+    self.menuVisible = ko.observable(false);
+
+    self.toggleMenu = function () {
         this.menuVisible(!this.menuVisible());
     };
 
     self.locationList = ko.observableArray([]);
-    initialLocations.forEach(function(locationItem) {
+
+    //add initial locations to an observable (data-bindable) array
+    initialLocations.forEach(function (locationItem) {
         self.locationList.push(new Location(locationItem));
     });
 
     self.currentLocation = ko.observable(self.locationList()[0]);
 
-    self.setLocation = function(clickedLocation) {
+    self.setLocation = function (clickedLocation) {
         self.currentLocation(clickedLocation);
         self.addMarker(clickedLocation);
     };
+
+    self.populateMapWithMarkers = function () {
+        this.locationList().forEach(function (item) {
+
+            let marker = new google.maps.Marker({
+                position: item.position(),
+                title: item.name(),
+                map: map,
+                animation: google.maps.Animation.DROP
+
+            });
+        });
+    }
 };
 
-ko.applyBindings(new ViewModel());
+let viewModel = new ViewModel();
+
+ko.applyBindings(viewModel);
 
 //adds a marker to a location object
-ViewModel.prototype.addMarker = function(location) {
+ViewModel.prototype.addMarker = function () {
+    console.log(self.locationList);
+    console.log("load markers clicked");
+    debugger;
 
-    console.log(location.name() + " clicked");
+    // let marker = new google.maps.Marker({
+    //     position: new google.maps.LatLng(location.position()),
+    //     map: map,
+    //     title: "test"
+    // });
+};
 
-    let marker = new google.maps.Marker({
-        position: new google.maps.LatLng(location.position()),
-        map: map,
-        title: "test"
-    });
+//callback function for google map async load
+window.mapCallback = function () {
+    initMap();
+
+    //is this the right way to interact with viewmodel?
+    viewModel.populateMapWithMarkers();
+
 };
 
 function initMap() {
@@ -78,8 +106,7 @@ function initMap() {
     let stavanger = {lat: 58.9700, lng: 5.7331};
     map = new google.maps.Map(document.getElementById('map'), {
         center: stavanger,
-        zoom: 15
+        zoom: 15,
+        disableDefaultUI: true
     });
-
 }
-
