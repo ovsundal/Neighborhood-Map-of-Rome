@@ -4,27 +4,28 @@ let map;
 let initialLocations = [
     {
         "position": {lat: 58.970936, lng: 5.732062},
-        "name": 'Døgnvill'
+        "name": 'Døgnvill',
+        "info": 'info for Døgnvill'
     },
     {
         "position": {lat: 58.970818, lng: 5.735233},
-        "name": 'Steam Kaffebar'
+        "name": 'Steam Kaffebar',
+        "info": 'info for Steam Kaffebar'
     },
     {
         "position": {lat: 58.970135, lng: 5.736521},
-        "name": 'Thai Nong Khai As'
+        "name": 'Thai Nong Khai As',
+        "info": 'info for Thai Nong Khai As'
     },
     {
         "position": {lat: 58.971349, lng: 5.738650},
-        "name": 'Mogul India'
+        "name": 'Mogul India',
+        "info": 'info for Mogul India'
     },
     {
         "position": {lat: 58.972237, lng: 5.732062},
-        "name": 'Delhi Bar & Restaurant'
-    },
-    {
-        "position": {lat: 58.973484, lng: 5.734870},
-        "name": 'Norwegian Petroleum Museum'
+        "name": 'Delhi Bar & Restaurant',
+        "info": 'info for Delhi Bar & Restaurant'
     }
 ];
 
@@ -35,13 +36,14 @@ let Location = function (data) {
         "lng": data.position.lng
     });
     this.name = ko.observable(data.name);
+    this.info = ko.observable(data.info);
 };
 
 let ViewModel = function () {
 
     let self = this;
 
-    self.menuVisible = ko.observable(false);
+    self.menuVisible = ko.observable(true);
 
     self.toggleMenu = function () {
         this.menuVisible(!this.menuVisible());
@@ -58,18 +60,26 @@ let ViewModel = function () {
 
     self.setLocation = function (clickedLocation) {
         self.currentLocation(clickedLocation);
-        self.addMarker(clickedLocation);
     };
 
     self.populateMapWithMarkers = function () {
         this.locationList().forEach(function (item) {
 
+            //create infowindow
+            let infowindow = new google.maps.InfoWindow({
+                content: item.info()
+            });
+
+            //create markers
             let marker = new google.maps.Marker({
                 position: item.position(),
                 title: item.name(),
                 map: map,
                 animation: google.maps.Animation.DROP
-
+            });
+            //add listener to marker
+            marker.addListener('click', function() {
+                infowindow.open(map, marker);
             });
         });
     }
@@ -78,19 +88,6 @@ let ViewModel = function () {
 let viewModel = new ViewModel();
 
 ko.applyBindings(viewModel);
-
-//adds a marker to a location object
-ViewModel.prototype.addMarker = function () {
-    console.log(self.locationList);
-    console.log("load markers clicked");
-    debugger;
-
-    // let marker = new google.maps.Marker({
-    //     position: new google.maps.LatLng(location.position()),
-    //     map: map,
-    //     title: "test"
-    // });
-};
 
 //callback function for google map async load
 window.mapCallback = function () {

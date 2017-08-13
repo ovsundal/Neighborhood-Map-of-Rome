@@ -8,6 +8,7 @@ html, body, #wrapper, .container-fluid, .row, #page-content-wrapper, #map {
 
 li {
     color: white;
+    cursor: pointer;
 }
 
 #map {
@@ -28,8 +29,4 @@ li {
     padding-left: 10px;
 }
 
-.buttonVisible {
-    position: absolute;
-    margin-right: -250px;
-}
 

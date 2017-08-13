@@ -21,14 +21,16 @@
 
 <div id="wrapper" data-bind="css: { toggled: menuVisible() == true}">
 
-    <button class="btn btn-default floating-panel" id="menu-toggle"
+    <button class="btn btn-default floating-panel "
             data-bind="click: toggleMenu" >Toggle Menu</button>
 
     <!-- Sidebar -->
     <div id="sidebar-wrapper" >
+
         <ul class="sidebar-nav" data-bind="foreach: locationList">
             <li data-bind="text: name, click: $parent.setLocation"></li>
         </ul>
+
     </div>
     <!-- /#sidebar-wrapper -->
 
