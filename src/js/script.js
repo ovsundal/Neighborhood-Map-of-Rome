@@ -1,7 +1,7 @@
 'use strict';
 
 let map;
-let initialLocations = [
+const initialLocations = [
     {
         "position": {lat: 58.970936, lng: 5.732062},
         "name": 'Døgnvill',
@@ -29,15 +29,28 @@ let initialLocations = [
     }
 ];
 
-let Location = function (data) {
+class Location {
+    constructor(data) {
 
-    this.position = ko.observable({
-        "lat": data.position.lat,
-        "lng": data.position.lng
-    });
-    this.name = ko.observable(data.name);
-    this.info = ko.observable(data.info);
-};
+        this.position = {
+            "lat": data.position.lat,
+            "lng": data.position.lng
+        };
+        this.name = data.name;
+        this.info = data.info;
+
+
+
+        //todo: implement marker as loc object
+        // this.marker = new google.maps.Marker({
+        //     position: this.position,
+        //     title: this.name,
+        //     map: map,
+        //     animation: google.maps.Animation.DROP
+        // });
+        //todo: implement infoview as loc object
+    }
+}
 
 let ViewModel = function () {
 
@@ -60,24 +73,34 @@ let ViewModel = function () {
 
     self.setLocation = function (clickedLocation) {
         self.currentLocation(clickedLocation);
+        console.log(self.currentLocation());
     };
 
+    //add markers and location windows
     self.populateMapWithMarkers = function () {
         this.locationList().forEach(function (item) {
 
             //create infowindow
             let infowindow = new google.maps.InfoWindow({
-                content: item.info()
+                content: item.info
             });
 
             //create markers
             let marker = new google.maps.Marker({
-                position: item.position(),
-                title: item.name(),
+                position: item.position,
+                title: item.name,
                 map: map,
                 animation: google.maps.Animation.DROP
             });
-            //add listener to marker
+            //todo: implement this
+            //add unique listener to marker, from https://stackoverflow.com/questions/3059044/google-maps-js-api-v3-simple-multiple-marker-example
+
+            // google.maps.event.addListener(marker, 'click', (function (marker, i) {
+            //     return function () {
+            //         infowindow.setContent()
+            //     }
+            // }));
+
             marker.addListener('click', function() {
                 infowindow.open(map, marker);
             });
