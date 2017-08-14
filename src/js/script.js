@@ -58,11 +58,10 @@ let ViewModel = function () {
         self.locationList.push(new Location(locationItem));
     });
 
-    self.currentLocation = ko.observable(self.locationList()[1]);
+    self.currentLocation = ko.observable(self.locationList()[0]);
 
     self.setLocation = function (clickedLocation) {
 
-        // debugger;
         for(let i = 0; i < self.locationList().length; i++) {
 
             //search for location clicked in observable array
@@ -70,61 +69,34 @@ let ViewModel = function () {
 
                 //set the found location as new current location
                 self.currentLocation = ko.observable(self.locationList()[i]);
-
-                //if infoWindow does not exist, create it.
-                if(!self.infoWindow) {
-                    self.infoWindow = new google.maps.InfoWindow();
-                }
-                // Change content and marker with new currentLocation
-                self.infoWindow.setContent(self.currentLocation().name);
-                self.infoWindow.open(map, self.currentLocation().marker);
+                self.setInfoWindow();
             }
         }
     };
 
-    self.createMarkers = function(item) {
+    self.setInfoWindow = function () {
 
-        item.marker =  new google.maps.Marker({
-            position: item.position,
-            title: item.name,
-            map: map,
-            animation: google.maps.Animation.DROP
-        });
+        //if infoWindow does not exist, create it.
+        if(!self.infoWindow) {
+            self.infoWindow = new google.maps.InfoWindow();
+        }
 
-        //add listener with bounce effect does not work when clicked. What is wrong in the code below?
-        //QUESTION: This does not work - see error message in console
-        // item.marker.addListener('click', toggleBounce());
-        //
-        // //todo add listener with bounce onclick here
-        // function toggleBounce() {
-        //     if (this.marker.getAnimation() !== null) {
-        //         this.marker.setAnimation(null);
-        //     } else {
-        //         this.marker.setAnimation(google.maps.Animation.BOUNCE);
-        //     }
-        // }
+        // Change content and marker with new currentLocation
+        self.infoWindow.setContent(self.currentLocation().name);
+        self.infoWindow.open(map, self.currentLocation().marker);
     };
 
-    self.createMarkersAndInfoWindow = function () {
+    self.createMarkers = function () {
 
-        let marker;
+        viewModel.locationList().forEach(function (locationItem) {
 
-        for(let i = 0; i < viewModel.locationList().length; i++) {
-
-            let locationItem = viewModel.locationList()[i];
-
-            //create the marker
-            marker = new google.maps.Marker({
+            locationItem.marker = new google.maps.Marker({
                 position: locationItem.position,
                 title: locationItem.name,
                 map: map,
                 animation: google.maps.Animation.DROP
             });
-
-            //add it to location item
-            locationItem.marker =  marker;
-
-        }
+        });
     }
 };
 
@@ -136,7 +108,7 @@ ko.applyBindings(viewModel);
 window.mapCallback = function () {
     initMap();
     //QUESTION: Is this the right way to interact with viewmodel?
-    viewModel.createMarkersAndInfoWindow();
+    viewModel.createMarkers();
 
 };
 
