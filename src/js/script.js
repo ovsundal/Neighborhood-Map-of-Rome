@@ -47,20 +47,20 @@ let ViewModel = function () {
 
     self.menuVisible = ko.observable(true);
 
-    self.toggleMenu = function () {
+    self.toggleMenu = () => {
         this.menuVisible(!this.menuVisible());
     };
 
     self.locationList = ko.observableArray([]);
 
     //add initial locations to an observable (data-bindable) array
-    initialLocations.forEach(function (locationItem) {
+    initialLocations.forEach( (locationItem) => {
         self.locationList.push(new Location(locationItem));
     });
 
     self.currentLocation = ko.observable(self.locationList()[0]);
 
-    self.setLocation = function (clickedLocation) {
+    self.setLocation = (clickedLocation) => {
 
         for(let i = 0; i < self.locationList().length; i++) {
 
@@ -74,7 +74,7 @@ let ViewModel = function () {
         }
     };
 
-    self.setInfoWindow = function () {
+    self.setInfoWindow = () => {
 
         //if infoWindow does not exist, create it.
         if(!self.infoWindow) {
@@ -86,9 +86,9 @@ let ViewModel = function () {
         self.infoWindow.open(map, self.currentLocation().marker);
     };
 
-    self.createMarkers = function () {
+    self.createMarkers = () => {
 
-        viewModel.locationList().forEach(function (locationItem) {
+        viewModel.locationList().forEach((locationItem) => {
 
             locationItem.marker = new google.maps.Marker({
                 position: locationItem.position,
@@ -107,7 +107,7 @@ let viewModel = new ViewModel();
 ko.applyBindings(viewModel);
 
 //callback function for google map async load
-window.mapCallback = function () {
+window.mapCallback = () => {
     initMap();
     //QUESTION: Is this the right way to interact with viewmodel?
     viewModel.createMarkers();
