@@ -58,43 +58,29 @@ let ViewModel = function () {
         self.locationList.push(new Location(locationItem));
     });
 
-    self.currentLocation = ko.observable(self.locationList()[0]);
+    self.currentLocation = ko.observable(self.locationList()[1]);
 
     self.setLocation = function (clickedLocation) {
-        self.currentLocation(clickedLocation);
-        console.log(self.currentLocation());
+
+        // debugger;
+        for(let i = 0; i < self.locationList().length; i++) {
+
+            //search for location clicked in observable array
+            if(clickedLocation === self.locationList()[i]) {
+
+                //set the found location as new current location
+                self.currentLocation = ko.observable(self.locationList()[i]);
+
+                //if infoWindow does not exist, create it.
+                if(!self.infoWindow) {
+                    self.infoWindow = new google.maps.InfoWindow();
+                }
+                // Change content and marker with new currentLocation
+                self.infoWindow.setContent(self.currentLocation().name);
+                self.infoWindow.open(map, self.currentLocation().marker);
+            }
+        }
     };
-
-    //add markers and location windows
-    self.populateMapWithMarkers = function () {
-        this.locationList().forEach(function (item) {
-
-            //create infowindow
-            let infowindow = new google.maps.InfoWindow({
-                content: item.info
-            });
-
-            //create markers
-            let marker = new google.maps.Marker({
-                position: item.position,
-                title: item.name,
-                map: map,
-                animation: google.maps.Animation.DROP
-            });
-            //todo: implement this
-            //add unique listener to marker, from https://stackoverflow.com/questions/3059044/google-maps-js-api-v3-simple-multiple-marker-example
-
-            // google.maps.event.addListener(marker, 'click', (function (marker, i) {
-            //     return function () {
-            //         infowindow.setContent()
-            //     }
-            // }));
-
-            marker.addListener('click', function() {
-                infowindow.open(map, marker);
-            });
-        });
-    }
 
     self.createMarkers = function(item) {
 
@@ -105,7 +91,40 @@ let ViewModel = function () {
             animation: google.maps.Animation.DROP
         });
 
-        //todo add listener with bounce onclick here
+        //add listener with bounce effect does not work when clicked. What is wrong in the code below?
+        //QUESTION: This does not work - see error message in console
+        // item.marker.addListener('click', toggleBounce());
+        //
+        // //todo add listener with bounce onclick here
+        // function toggleBounce() {
+        //     if (this.marker.getAnimation() !== null) {
+        //         this.marker.setAnimation(null);
+        //     } else {
+        //         this.marker.setAnimation(google.maps.Animation.BOUNCE);
+        //     }
+        // }
+    };
+
+    self.createMarkersAndInfoWindow = function () {
+
+        let marker;
+
+        for(let i = 0; i < viewModel.locationList().length; i++) {
+
+            let locationItem = viewModel.locationList()[i];
+
+            //create the marker
+            marker = new google.maps.Marker({
+                position: locationItem.position,
+                title: locationItem.name,
+                map: map,
+                animation: google.maps.Animation.DROP
+            });
+
+            //add it to location item
+            locationItem.marker =  marker;
+
+        }
     }
 };
 
@@ -114,14 +133,10 @@ let viewModel = new ViewModel();
 ko.applyBindings(viewModel);
 
 //callback function for google map async load
-//QUESTION: Is this the right way to interact with viewmodel?
 window.mapCallback = function () {
     initMap();
-
-    //create markers
-    viewModel.locationList().forEach(function (item) {
-        viewModel.createMarkers(item);
-    });
+    //QUESTION: Is this the right way to interact with viewmodel?
+    viewModel.createMarkersAndInfoWindow();
 
 };
 
@@ -134,3 +149,21 @@ function initMap() {
         disableDefaultUI: true
     });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
