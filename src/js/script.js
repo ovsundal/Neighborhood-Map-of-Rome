@@ -96,6 +96,8 @@ let ViewModel = function () {
                 map: map,
                 animation: google.maps.Animation.DROP
             });
+            // QUESTION: listener below returns ..."read property 'apply' of undefined"...What is wrong?
+            // locationItem.marker.addListener('click', self.setInfoWindow());
         });
     }
 };
