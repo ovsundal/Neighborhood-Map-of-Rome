@@ -90,19 +90,16 @@ let ViewModel = function () {
         self.infoWindow.open(map, self.currentLocation().marker);
     };
 
-    self.createMarkers = (locationList) => {
+    self.createMarker = (location) => {
 
-        locationList.forEach((locationItem) => {
-
-            locationItem.marker = new google.maps.Marker({
-                position: locationItem.position,
-                title: locationItem.name,
+            location.marker = new google.maps.Marker({
+                position: location.position,
+                title: location.name,
                 map: map,
                 animation: google.maps.Animation.DROP
             });
             // QUESTION: listener below returns ..."read property 'apply' of undefined"...What is wrong?
             // locationItem.marker.addListener('click', self.setInfoWindow());
-        });
     };
 };
 
@@ -114,9 +111,16 @@ ko.applyBindings(viewModel);
 window.mapCallback = () => {
     initMap();
     //QUESTION: Is this the right way to interact with viewmodel?
-    viewModel.createMarkers(viewModel.locationList());
+
+    //create marker for each location
+    viewModel.locationList().forEach((item) => {
+
+        viewModel.createMarker(item);
+    });
+
 
     service = new google.maps.places.PlacesService(map);
+
 
 };
 
