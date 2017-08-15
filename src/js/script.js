@@ -2,7 +2,6 @@
 
 let map;
 let service;
-let autoComplete;
 
 const initialLocations = [
     {
@@ -117,6 +116,7 @@ let ViewModel = function () {
             // QUESTION: listener below returns ..."read property 'apply' of undefined"...What is wrong?
             // locationItem.marker.addListener('click', self.setInfoWindow());
     };
+
 };
 
 let viewModel = new ViewModel();
@@ -136,29 +136,30 @@ window.mapCallback = () => {
     });
 
     // test data for nearBySearch
-    var pyrmont = {lat: -33.867, lng: 151.195};
+    // var pyrmont = {lat: -33.867, lng: 151.195};
 
-    var service = new google.maps.places.PlacesService(map);
-    service.nearbySearch({
-        location: pyrmont,
-        radius: 500,
-        type: ['store']
-    }, callback);
+    service = new google.maps.places.PlacesService(map);
 
-    function callback(results, status) {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-
-        results.forEach((item) => {
-
-            viewModel.locationList.push(item);
-            viewModel.createMarker(item);
-
-        });
+    // service.nearbySearch({
+    //     location: pyrmont,
+    //     radius: 500,
+    //     type: ['store']
+    // }, callback);
+    //
+    // function callback(results, status) {
+    //     if (status === google.maps.places.PlacesServiceStatus.OK) {
+    //
+    //     results.forEach((item) => {
+    //
+    //         viewModel.locationList.push(item);
+    //         viewModel.createMarker(item);
+    //
+    //     });
 
 
             // viewModel.createMarker(results);
-        }
-    }
+        // }
+    // }
 };
 
 function initMap() {
@@ -194,7 +195,26 @@ function initAutoComplete() {
     });
 }
 
+function searchForData() {
 
+    service.textSearch(viewModel.searchBarText, searchCallback());
+}
+
+function searchCallback(results, status) {
+    debugger;
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+        results.forEach((result) => {
+            createMarker(result);
+        });
+    }
+}
+
+//when enter is pressed on search bar, launch search
+$(document).keypress(function(e) {
+    if(e.which == 13) {
+        searchForData();
+    }
+});
 
 
 
