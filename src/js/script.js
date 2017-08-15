@@ -2,6 +2,7 @@
 
 let map;
 let service;
+let autoComplete;
 
 const initialLocations = [
     {
@@ -65,6 +66,7 @@ let ViewModel = function () {
     self.menuVisible = ko.observable(true);
     self.searchBarText = ko.observable("");
 
+
     self.toggleMenu = () => {
         this.menuVisible(!this.menuVisible());
     };
@@ -124,16 +126,14 @@ ko.applyBindings(viewModel);
 //callback function for google map async load
 window.mapCallback = () => {
     initMap();
+    initAutoComplete();
+
     //QUESTION: Is this the right way to interact with viewmodel?
 
     //create marker for each location
     viewModel.locationList().forEach((item) => {
-
         viewModel.createMarker(item);
     });
-
-
-    service = new google.maps.places.PlacesService(map);
 
     // test data for nearBySearch
     var pyrmont = {lat: -33.867, lng: 151.195};
@@ -171,7 +171,28 @@ function initMap() {
     });
 }
 
+function initAutoComplete() {
 
+    let input = document.getElementById('searchBox');
+    // let input = viewModel.searchBarText();
+
+    let autocomplete = new google.maps.places.Autocomplete(input);
+    autocomplete.bindTo('bounds', map);
+
+    var infowindow = new google.maps.InfoWindow();
+
+
+    autocomplete.addListener('place_changed',() => {
+        infowindow.close();
+        var place = autocomplete.getPlace();
+        if (!place.geometry) {
+            // User entered the name of a Place that was not suggested and
+            // pressed the Enter key, or the Place Details request failed.
+            window.alert("No details available for input: '" + place.name + "'");
+            return;
+        }
+    });
+}
 
 
 

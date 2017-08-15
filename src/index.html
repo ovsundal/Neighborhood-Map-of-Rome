@@ -27,7 +27,7 @@
     <!-- Sidebar -->
     <div id="sidebar-wrapper" >
         <ul class="sidebar-nav">
-            <li><input data-bind="value: searchBarText" type="text" class="search-box" placeholder="Search"></li>
+            <li><input data-bind="value: searchBarText" type="text" class="search-box" placeholder="Search" id="searchBox"></li>
         </ul>
         <ul class="sidebar-nav" data-bind="foreach: locationList">
             <li data-bind="text: name, click: $parent.setLocation"></li>
