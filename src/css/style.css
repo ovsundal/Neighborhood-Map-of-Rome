@@ -18,7 +18,7 @@ li {
 .floating-panel {
     position: absolute;
     top: 10px;
-    left: 25%;
+    /*left: 25%;*/
     z-index: 5;
     background-color: #fff;
     padding: 5px;
@@ -32,5 +32,9 @@ li {
 .search-box {
     color: black;
     margin-top: 15px;
+}
+
+.pushButtonLeft {
+    right:130px;
 }
 

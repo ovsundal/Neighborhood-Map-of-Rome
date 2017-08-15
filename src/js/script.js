@@ -57,7 +57,7 @@ class Location {
 }
 
 //QUESTION: Will knockouts observables be messed up if i apply ES6 class to it? Is it proper syntax to put everything in the model
-//inside the constructor (as in Location above)?
+//inside the constructor (as in Location above)? OK
 let ViewModel = function () {
 
     let self = this;
@@ -103,8 +103,11 @@ let ViewModel = function () {
         // Change content and marker with new currentLocation
         self.infoWindow.setContent(self.currentLocation().name);
         self.infoWindow.open(map, self.currentLocation().marker);
+
+        //todo trigger bounce for clicked item here
     };
 
+    //todo put createMarker in Location constructor to eliminate closure problem
     self.createMarker = (item) => {
 
         item.marker = new google.maps.Marker({
@@ -114,11 +117,11 @@ let ViewModel = function () {
                 animation: google.maps.Animation.DROP
             });
             // QUESTION: listener below returns ..."read property 'apply' of undefined"...What is wrong?
-            // locationItem.marker.addListener('click', self.setInfoWindow());
+        item.marker.addListener('click', self.setInfoWindow);
     };
 
 };
-
+//only declare viewModel
 let viewModel = new ViewModel();
 
 ko.applyBindings(viewModel);
@@ -126,11 +129,13 @@ ko.applyBindings(viewModel);
 //callback function for google map async load
 window.mapCallback = () => {
     initMap();
+    //instantiate viewmodel here
+    //applybindings here
     initAutoComplete();
 
     //QUESTION: Is this the right way to interact with viewmodel?
 
-    //create marker for each location
+    //create marker for each location (this should be here)
     viewModel.locationList().forEach((item) => {
         viewModel.createMarker(item);
     });
@@ -210,13 +215,14 @@ function searchCallback(results, status) {
 }
 
 //when enter is pressed on search bar, launch search
+//pretty much like this, but no jquery (use event binding)
 $(document).keypress(function(e) {
     if(e.which == 13) {
         searchForData();
     }
 });
 
-
+//need to have error handlign and filtering of the result
 
 
 
