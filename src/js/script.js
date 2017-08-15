@@ -5,27 +5,38 @@ let service;
 
 const initialLocations = [
     {
-        "position": {lat: 58.970936, lng: 5.732062},
+        "geometry": {
+            "location": {lat: 58.970936, lng: 5.732062}
+        },
         "name": 'Døgnvill',
         "info": 'info for Døgnvill'
-    },
+    }
+    ,
     {
-        "position": {lat: 58.970818, lng: 5.735233},
+        "geometry": {
+            "location": {lat: 58.970818, lng: 5.735233}
+        },
         "name": 'Steam Kaffebar',
         "info": 'info for Steam Kaffebar'
     },
     {
-        "position": {lat: 58.970135, lng: 5.736521},
+        "geometry": {
+            "location": {lat: 58.970135, lng: 5.736521}
+        },
         "name": 'Thai Nong Khai As',
         "info": 'info for Thai Nong Khai As'
     },
     {
-        "position": {lat: 58.971349, lng: 5.738650},
+        "geometry": {
+            "location": {lat: 58.971349, lng: 5.738650}
+        },
         "name": 'Mogul India',
         "info": 'info for Mogul India'
     },
     {
-        "position": {lat: 58.972237, lng: 5.732062},
+        "geometry": {
+            "location": {lat: 58.972237, lng: 5.732062}
+        },
         "name": 'Delhi Bar & Restaurant',
         "info": 'info for Delhi Bar & Restaurant'
     }
@@ -34,16 +45,19 @@ const initialLocations = [
 class Location {
     constructor(data) {
 
-        this.position = {
-            "lat": data.position.lat,
-            "lng": data.position.lng
+        this.geometry = {
+            location: {
+                "lat": data.geometry.location.lat,
+                "lng": data.geometry.location.lng
+            }
         };
         this.name = data.name;
         this.info = data.info;
     }
 }
 
-//QUESTION: Will knockouts observables be messed up if i apply ES6 class to it?
+//QUESTION: Will knockouts observables be messed up if i apply ES6 class to it? Is it proper syntax to put everything in the model
+//inside the constructor (as in Location above)?
 let ViewModel = function () {
 
     let self = this;
@@ -90,11 +104,11 @@ let ViewModel = function () {
         self.infoWindow.open(map, self.currentLocation().marker);
     };
 
-    self.createMarker = (location) => {
-        debugger;
-            location.marker = new google.maps.Marker({
-                position: location.position,
-                title: location.name,
+    self.createMarker = (item) => {
+
+        item.marker = new google.maps.Marker({
+                position: item.geometry.location,
+                title: item.name,
                 map: map,
                 animation: google.maps.Animation.DROP
             });
