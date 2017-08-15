@@ -91,7 +91,7 @@ let ViewModel = function () {
     };
 
     self.createMarker = (location) => {
-
+        debugger;
             location.marker = new google.maps.Marker({
                 position: location.position,
                 title: location.name,
@@ -121,7 +121,30 @@ window.mapCallback = () => {
 
     service = new google.maps.places.PlacesService(map);
 
+    // test data for nearBySearch
+    var pyrmont = {lat: -33.867, lng: 151.195};
 
+    var service = new google.maps.places.PlacesService(map);
+    service.nearbySearch({
+        location: pyrmont,
+        radius: 500,
+        type: ['store']
+    }, callback);
+
+    function callback(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+
+        results.forEach((item) => {
+
+            viewModel.locationList.push(item);
+            viewModel.createMarker(item);
+
+        });
+
+
+            // viewModel.createMarker(results);
+        }
+    }
 };
 
 function initMap() {
