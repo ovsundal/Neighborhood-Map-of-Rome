@@ -1,6 +1,8 @@
 'use strict';
 
 let map;
+let service;
+
 const initialLocations = [
     {
         "position": {lat: 58.970936, lng: 5.732062},
@@ -41,11 +43,13 @@ class Location {
     }
 }
 
+//QUESTION: Will knockouts observables be messed up if i apply ES6 class to it?
 let ViewModel = function () {
 
     let self = this;
 
     self.menuVisible = ko.observable(true);
+    self.searchBarText = ko.observable("");
 
     self.toggleMenu = () => {
         this.menuVisible(!this.menuVisible());
@@ -86,9 +90,9 @@ let ViewModel = function () {
         self.infoWindow.open(map, self.currentLocation().marker);
     };
 
-    self.createMarkers = () => {
+    self.createMarkers = (locationList) => {
 
-        viewModel.locationList().forEach((locationItem) => {
+        locationList.forEach((locationItem) => {
 
             locationItem.marker = new google.maps.Marker({
                 position: locationItem.position,
@@ -99,7 +103,7 @@ let ViewModel = function () {
             // QUESTION: listener below returns ..."read property 'apply' of undefined"...What is wrong?
             // locationItem.marker.addListener('click', self.setInfoWindow());
         });
-    }
+    };
 };
 
 let viewModel = new ViewModel();
@@ -110,7 +114,9 @@ ko.applyBindings(viewModel);
 window.mapCallback = () => {
     initMap();
     //QUESTION: Is this the right way to interact with viewmodel?
-    viewModel.createMarkers();
+    viewModel.createMarkers(viewModel.locationList());
+
+    service = new google.maps.places.PlacesService(map);
 
 };
 
