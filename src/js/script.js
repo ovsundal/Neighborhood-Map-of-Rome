@@ -3,6 +3,7 @@
 let map;
 let service;
 let viewModel;
+let infoWindow;
 
 const initialLocations = [
     {
@@ -56,16 +57,16 @@ class Location {
         this.info = data.info;
 
         //create marker
-            this.marker = new google.maps.Marker({
-                position: this.geometry.location,
-                title: this.name,
-                map: map,
-                animation: google.maps.Animation.DROP
-            });
+        this.marker = new google.maps.Marker({
+            position: this.geometry.location,
+            title: this.name,
+            map: map,
+            animation: google.maps.Animation.DROP
+        });
 
         //todo add listener to createMarker function
-            // QUESTION: listener below returns ..."read property 'apply' of undefined"...What is wrong?
-            // item.marker.addListener('click', self.setInfoWindow);
+        // QUESTION: listener below returns ..."read property 'apply' of undefined"...What is wrong?
+        // item.marker.addListener('click', self.setInfoWindow);
 
     }
 }
@@ -100,24 +101,12 @@ class ViewModel {
 
                     //set the found location as new current location
                     self.currentLocation = ko.observable(self.locationList()[i]);
-                    self.setInfoWindow();
+                    setInfoWindow();
                 }
             }
         };
 
-        self.setInfoWindow = () => {
 
-            //if infoWindow does not exist, create it.
-            if (!self.infoWindow) {
-                self.infoWindow = new google.maps.InfoWindow();
-            }
-
-            // Change content and marker with new currentLocation
-            self.infoWindow.setContent(self.currentLocation().name);
-            self.infoWindow.open(map, self.currentLocation().marker);
-
-            //todo trigger bounce for clicked item here
-        }
 
     };
 }
@@ -152,8 +141,8 @@ window.mapCallback = () => {
     //     });
 
 
-            // viewModel.createMarker(results);
-        // }
+    // viewModel.createMarker(results);
+    // }
     // }
 };
 
@@ -175,17 +164,16 @@ function initAutoComplete() {
     let autocomplete = new google.maps.places.Autocomplete(input);
     autocomplete.bindTo('bounds', map);
 
-    var infowindow = new google.maps.InfoWindow();
+    let infowindow = new google.maps.InfoWindow();
 
 
     autocomplete.addListener('place_changed',() => {
         infowindow.close();
-        var place = autocomplete.getPlace();
+        let place = autocomplete.getPlace();
         if (!place.geometry) {
             // User entered the name of a Place that was not suggested and
             // pressed the Enter key, or the Place Details request failed.
             window.alert("No details available for input: '" + place.name + "'");
-            return;
         }
     });
 }
@@ -197,17 +185,31 @@ function searchForData() {
 
 function searchCallback(results, status) {
     debugger;
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
         results.forEach((result) => {
             createMarker(result);
         });
     }
 }
 
+function setInfoWindow() {
+
+    //if infoWindow does not exist, create it.
+    if (!infoWindow) {
+        infoWindow = new google.maps.InfoWindow();
+    }
+
+    // Change content and marker with new currentLocation
+    infoWindow.setContent(viewModel.currentLocation().name);
+    infoWindow.open(map, viewModel.currentLocation().marker);
+
+    //todo trigger bounce for clicked item here
+}
+
 //when enter is pressed on search bar, launch search
 //pretty much like this, but no jquery (use event binding)
 $(document).keypress(function(e) {
-    if(e.which == 13) {
+    if(e.which === 13) {
         searchForData();
     }
 });
