@@ -62,81 +62,65 @@ class Location {
                 map: map,
                 animation: google.maps.Animation.DROP
             });
+
+        //todo add listener to createMarker function
             // QUESTION: listener below returns ..."read property 'apply' of undefined"...What is wrong?
             // item.marker.addListener('click', self.setInfoWindow);
 
     }
-    //todo put createMarker function here
 }
 
 //QUESTION: Will knockouts observables be messed up if i apply ES6 class to it? Is it proper syntax to put everything in the model
 //inside the constructor (as in Location above)? OK
-let ViewModel = function () {
+class ViewModel {
+    constructor() {
 
-    let self = this;
+        let self = this;
 
-    self.menuVisible = ko.observable(true);
-    self.searchBarText = ko.observable("");
+        self.menuVisible = ko.observable(true);
+        self.searchBarText = ko.observable("");
+        self.locationList = ko.observableArray([]);
 
+        self.toggleMenu = () => {
+            this.menuVisible(!this.menuVisible());
+        };
 
-    self.toggleMenu = () => {
-        this.menuVisible(!this.menuVisible());
-    };
+        //add initial locations to an observable (data-bindable) array
+        initialLocations.forEach((locationItem) => {
+            self.locationList.push(new Location(locationItem));
+        });
 
-    self.locationList = ko.observableArray([]);
+        self.currentLocation = ko.observable(self.locationList()[0]);
 
-    //add initial locations to an observable (data-bindable) array
-    initialLocations.forEach( (locationItem) => {
-        self.locationList.push(new Location(locationItem));
-    });
+        self.setLocation = (clickedLocation) => {
 
-    self.currentLocation = ko.observable(self.locationList()[0]);
+            for (let i = 0; i < self.locationList().length; i++) {
+                //search for location clicked in observable array
+                if (clickedLocation === self.locationList()[i]) {
 
-    self.setLocation = (clickedLocation) => {
-
-        for(let i = 0; i < self.locationList().length; i++) {
-
-            //search for location clicked in observable array
-            if(clickedLocation === self.locationList()[i]) {
-
-                //set the found location as new current location
-                self.currentLocation = ko.observable(self.locationList()[i]);
-                self.setInfoWindow();
+                    //set the found location as new current location
+                    self.currentLocation = ko.observable(self.locationList()[i]);
+                    self.setInfoWindow();
+                }
             }
+        };
+
+        self.setInfoWindow = () => {
+
+            //if infoWindow does not exist, create it.
+            if (!self.infoWindow) {
+                self.infoWindow = new google.maps.InfoWindow();
+            }
+
+            // Change content and marker with new currentLocation
+            self.infoWindow.setContent(self.currentLocation().name);
+            self.infoWindow.open(map, self.currentLocation().marker);
+
+            //todo trigger bounce for clicked item here
         }
+
     };
-
-    self.setInfoWindow = () => {
-
-        //if infoWindow does not exist, create it.
-        if(!self.infoWindow) {
-            self.infoWindow = new google.maps.InfoWindow();
-        }
-
-        // Change content and marker with new currentLocation
-        self.infoWindow.setContent(self.currentLocation().name);
-        self.infoWindow.open(map, self.currentLocation().marker);
-
-        //todo trigger bounce for clicked item here
-    };
-
-    //todo put createMarker in Location constructor to eliminate closure problem
-    // self.createMarker = (item) => {
-    //
-    //     item.marker = new google.maps.Marker({
-    //             position: item.geometry.location,
-    //             title: item.name,
-    //             map: map,
-    //             animation: google.maps.Animation.DROP
-    //         });
-    //         // QUESTION: listener below returns ..."read property 'apply' of undefined"...What is wrong?
-    //     item.marker.addListener('click', self.setInfoWindow);
-    // };
-
-};
-//only declare viewModel
-
-
+}
 
 //callback function for google map async load
 window.mapCallback = () => {
@@ -145,13 +129,6 @@ window.mapCallback = () => {
 
     viewModel = new ViewModel();
     ko.applyBindings(viewModel);
-
-    //QUESTION: Is this the right way to interact with viewmodel?
-
-    //create marker for each location (this should be here)
-    // viewModel.locationList().forEach((item) => {
-    //     viewModel.createMarker(item);
-    // });
 
     // test data for nearBySearch
     // var pyrmont = {lat: -33.867, lng: 151.195};
@@ -236,15 +213,3 @@ $(document).keypress(function(e) {
 });
 
 //need to have error handlign and filtering of the result
-
-
-
-
-
-
-
-
-
-
-
-
