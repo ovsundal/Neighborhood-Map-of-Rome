@@ -4,6 +4,7 @@ let map;
 let service;
 let viewModel;
 let infoWindow;
+let currentMarker;
 
 const initialLocations = [
     {
@@ -192,6 +193,10 @@ function searchCallback(results, status) {
 
 function setInfoWindow() {
 
+    if(currentMarker) {
+        currentMarker.setAnimation(null);
+    }
+
     //if infoWindow does not exist, create it.
     if (!infoWindow) {
         infoWindow = new google.maps.InfoWindow();
@@ -200,6 +205,9 @@ function setInfoWindow() {
     // Change content and marker with new currentLocation
     infoWindow.setContent(viewModel.currentLocation().name);
     infoWindow.open(map, viewModel.currentLocation().marker);
+
+    //make marker bounce
+    currentMarker = viewModel.currentLocation().marker;
 
     if (viewModel.currentLocation().marker.getAnimation() !== null) {
         viewModel.currentLocation().marker.setAnimation(null);
