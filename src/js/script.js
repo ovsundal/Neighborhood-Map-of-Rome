@@ -54,6 +54,17 @@ class Location {
         };
         this.name = data.name;
         this.info = data.info;
+
+        //create marker
+            this.marker = new google.maps.Marker({
+                position: this.geometry.location,
+                title: this.name,
+                map: map,
+                animation: google.maps.Animation.DROP
+            });
+            // QUESTION: listener below returns ..."read property 'apply' of undefined"...What is wrong?
+            // item.marker.addListener('click', self.setInfoWindow);
+
     }
     //todo put createMarker function here
 }
@@ -110,17 +121,17 @@ let ViewModel = function () {
     };
 
     //todo put createMarker in Location constructor to eliminate closure problem
-    self.createMarker = (item) => {
-
-        item.marker = new google.maps.Marker({
-                position: item.geometry.location,
-                title: item.name,
-                map: map,
-                animation: google.maps.Animation.DROP
-            });
-            // QUESTION: listener below returns ..."read property 'apply' of undefined"...What is wrong?
-        item.marker.addListener('click', self.setInfoWindow);
-    };
+    // self.createMarker = (item) => {
+    //
+    //     item.marker = new google.maps.Marker({
+    //             position: item.geometry.location,
+    //             title: item.name,
+    //             map: map,
+    //             animation: google.maps.Animation.DROP
+    //         });
+    //         // QUESTION: listener below returns ..."read property 'apply' of undefined"...What is wrong?
+    //     item.marker.addListener('click', self.setInfoWindow);
+    // };
 
 };
 //only declare viewModel
@@ -138,9 +149,9 @@ window.mapCallback = () => {
     //QUESTION: Is this the right way to interact with viewmodel?
 
     //create marker for each location (this should be here)
-    viewModel.locationList().forEach((item) => {
-        viewModel.createMarker(item);
-    });
+    // viewModel.locationList().forEach((item) => {
+    //     viewModel.createMarker(item);
+    // });
 
     // test data for nearBySearch
     // var pyrmont = {lat: -33.867, lng: 151.195};
