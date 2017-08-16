@@ -2,6 +2,7 @@
 
 let map;
 let service;
+let viewModel;
 
 const initialLocations = [
     {
@@ -122,15 +123,20 @@ let ViewModel = function () {
 
 };
 //only declare viewModel
-let viewModel = new ViewModel();
 
-ko.applyBindings(viewModel);
+
 
 //callback function for google map async load
 window.mapCallback = () => {
     initMap();
-    //instantiate viewmodel here
-    //applybindings here
+    //todo instantiate viewmodel here
+
+    viewModel = new ViewModel();
+
+    ko.applyBindings(viewModel);
+
+
+    //todo applybindings here
     initAutoComplete();
 
     //QUESTION: Is this the right way to interact with viewmodel?
