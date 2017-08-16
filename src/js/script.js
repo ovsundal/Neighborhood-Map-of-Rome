@@ -72,6 +72,8 @@ class Location {
         //     setInfoWindowAndTriggerBounce()
         // });
 
+        //push the item into the observablearray
+        viewModel.locationList.push(this);
     }
 }
 
@@ -88,15 +90,10 @@ class ViewModel {
             this.menuVisible(!this.menuVisible());
         };
 
-        //add initial locations to an observable (data-bindable) array
-        initialLocations.forEach((locationItem) => {
-            self.locationList.push(new Location(locationItem));
-        });
-
         self.currentLocation = ko.observable(self.locationList()[0]);
 
         self.setLocation = (clickedLocation) => {
-debugger;
+
             for (let i = 0; i < self.locationList().length; i++) {
                 //search for location clicked in observable array
                 if (clickedLocation === self.locationList()[i]) {
@@ -107,9 +104,6 @@ debugger;
                 }
             }
         };
-
-
-
     };
 }
 
@@ -120,6 +114,11 @@ window.mapCallback = () => {
 
     viewModel = new ViewModel();
     ko.applyBindings(viewModel);
+
+    initialLocations.forEach((locationItem) => {
+        new Location(locationItem);
+    });
+
 
     // test data for nearBySearch
     // var pyrmont = {lat: -33.867, lng: 151.195};
@@ -169,7 +168,7 @@ function initAutoComplete() {
     let infowindow = new google.maps.InfoWindow();
 
 
-    autocomplete.addListener('place_changed',() => {
+    autocomplete.addListener('place_changed', () => {
         infowindow.close();
         let place = autocomplete.getPlace();
         if (!place.geometry) {
@@ -196,7 +195,7 @@ function searchCallback(results, status) {
 
 function setInfoWindowAndTriggerBounce() {
 
-    if(currentMarker) {
+    if (currentMarker) {
         currentMarker.setAnimation(null);
     }
 
@@ -221,8 +220,8 @@ function setInfoWindowAndTriggerBounce() {
 
 //when enter is pressed on search bar, launch search
 //pretty much like this, but no jquery (use event binding)
-$(document).keypress(function(e) {
-    if(e.which === 13) {
+$(document).keypress(function (e) {
+    if (e.which === 13) {
         searchForData();
     }
 });
