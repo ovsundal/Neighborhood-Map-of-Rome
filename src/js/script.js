@@ -71,8 +71,6 @@ class Location {
     }
 }
 
-//QUESTION: Will knockouts observables be messed up if i apply ES6 class to it? Is it proper syntax to put everything in the model
-//inside the constructor (as in Location above)? OK
 class ViewModel {
     constructor() {
 
@@ -202,6 +200,12 @@ function setInfoWindow() {
     // Change content and marker with new currentLocation
     infoWindow.setContent(viewModel.currentLocation().name);
     infoWindow.open(map, viewModel.currentLocation().marker);
+
+    if (viewModel.currentLocation().marker.getAnimation() !== null) {
+        viewModel.currentLocation().marker.setAnimation(null);
+    } else {
+        viewModel.currentLocation().marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
 
     //todo trigger bounce for clicked item here
 }
