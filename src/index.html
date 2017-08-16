@@ -21,13 +21,14 @@
 
 <div id="wrapper" data-bind="css: { toggled: menuVisible() == true}">
 
-    <button class="btn btn-default floating-panel pushButtonLeft"
-            data-bind="click: toggleMenu" >Toggle Menu</button>
+    <button class="btn btn-default floating-panel"
+            data-bind="click: toggleMenu, css: { toggled: menuVisible() == true}" >Toggle Menu</button>
 
     <!-- Sidebar -->
     <div id="sidebar-wrapper" >
         <ul class="sidebar-nav">
-            <li><input data-bind="textInput: searchBarText" type="text" class="search-box" placeholder="Search" id="searchBox"></li>
+            <li><input data-bind="textInput: searchBarText"
+                       type="text" class="search-box" placeholder="Search" id="searchBox"></li>
         </ul>
         <ul class="sidebar-nav" data-bind="foreach: locationList">
             <li data-bind="text: name, click: $parent.setLocation"></li>

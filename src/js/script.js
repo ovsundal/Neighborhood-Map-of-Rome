@@ -55,6 +55,7 @@ class Location {
         this.name = data.name;
         this.info = data.info;
     }
+    //todo put createMarker function here
 }
 
 //QUESTION: Will knockouts observables be messed up if i apply ES6 class to it? Is it proper syntax to put everything in the model
@@ -129,15 +130,10 @@ let ViewModel = function () {
 //callback function for google map async load
 window.mapCallback = () => {
     initMap();
-    //todo instantiate viewmodel here
+    initAutoComplete();
 
     viewModel = new ViewModel();
-
     ko.applyBindings(viewModel);
-
-
-    //todo applybindings here
-    initAutoComplete();
 
     //QUESTION: Is this the right way to interact with viewmodel?
 
