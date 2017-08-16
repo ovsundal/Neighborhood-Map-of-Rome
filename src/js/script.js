@@ -115,36 +115,13 @@ window.mapCallback = () => {
     viewModel = new ViewModel();
     ko.applyBindings(viewModel);
 
+    //populate listview with initial locations
     initialLocations.forEach((locationItem) => {
         new Location(locationItem);
     });
 
-
-    // test data for nearBySearch
-    // var pyrmont = {lat: -33.867, lng: 151.195};
-
     service = new google.maps.places.PlacesService(map);
 
-    // service.nearbySearch({
-    //     location: pyrmont,
-    //     radius: 500,
-    //     type: ['store']
-    // }, callback);
-    //
-    // function callback(results, status) {
-    //     if (status === google.maps.places.PlacesServiceStatus.OK) {
-    //
-    //     results.forEach((item) => {
-    //
-    //         viewModel.locationList.push(item);
-    //         viewModel.createMarker(item);
-    //
-    //     });
-
-
-    // viewModel.createMarker(results);
-    // }
-    // }
 };
 
 function initMap() {
@@ -176,6 +153,12 @@ function initAutoComplete() {
             // pressed the Enter key, or the Place Details request failed.
             window.alert("No details available for input: '" + place.name + "'");
         }
+
+        //make latlng compatible with Location objects
+        place.geometry.location.lat = place.geometry.location.lat();
+        place.geometry.location.lng = place.geometry.location.lng();
+
+        new Location(place);
     });
 }
 
