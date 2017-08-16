@@ -67,7 +67,10 @@ class Location {
 
         //todo add listener to createMarker function
         // QUESTION: listener below returns ..."read property 'apply' of undefined"...What is wrong?
-        // item.marker.addListener('click', self.setInfoWindow);
+        // this.marker.addListener('click', function() {
+        //     viewModel.setLocation();
+        //     setInfoWindowAndTriggerBounce()
+        // });
 
     }
 }
@@ -93,14 +96,14 @@ class ViewModel {
         self.currentLocation = ko.observable(self.locationList()[0]);
 
         self.setLocation = (clickedLocation) => {
-
+debugger;
             for (let i = 0; i < self.locationList().length; i++) {
                 //search for location clicked in observable array
                 if (clickedLocation === self.locationList()[i]) {
 
                     //set the found location as new current location
                     self.currentLocation = ko.observable(self.locationList()[i]);
-                    setInfoWindow();
+                    setInfoWindowAndTriggerBounce();
                 }
             }
         };
@@ -191,7 +194,7 @@ function searchCallback(results, status) {
     }
 }
 
-function setInfoWindow() {
+function setInfoWindowAndTriggerBounce() {
 
     if(currentMarker) {
         currentMarker.setAnimation(null);
@@ -214,8 +217,6 @@ function setInfoWindow() {
     } else {
         viewModel.currentLocation().marker.setAnimation(google.maps.Animation.BOUNCE);
     }
-
-    //todo trigger bounce for clicked item here
 }
 
 //when enter is pressed on search bar, launch search
