@@ -107,6 +107,19 @@ class ViewModel {
                 }
             }
         };
+
+        self.search = () => {
+
+            //delay necessary for input field value to update before function is run
+            setTimeout(() => {
+
+                console.log(self.searchBarText());
+
+
+
+            }, 1);
+
+        };
     };
 }
 
