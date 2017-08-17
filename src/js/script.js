@@ -11,82 +11,80 @@ const initialLocations = [
         "geometry": {
             "location": {lat: 58.970936, lng: 5.732062}
         },
-        "name": 'Døgnvill',
-        "info": 'info for Døgnvill'
+        "name": 'Døgnvill Burger Stavanger',
+        "formatted_address": 'Skagen 13, 4006 Stavanger, Norway',
+        "rating": '4.5',
+        "types": 'bar, restaurant, food, point_of_interest, establishment, '
     }
     ,
     {
         "geometry": {
             "location": {lat: 58.970818, lng: 5.735233}
         },
-        "name": 'Steam Kaffebar',
-        "info": 'info for Steam Kaffebar'
+        "name": 'Steam Kaffebar Stavanger',
+        "formatted_address": 'Klubbgata 5, 4013 Stavanger, Norway',
+        "rating": '4.4',
+        "types": 'cafe, food, store, point_of_interest, establishment,'
     },
     {
         "geometry": {
             "location": {lat: 58.970135, lng: 5.736521}
         },
         "name": 'Thai Nong Khai As',
-        "info": 'info for Thai Nong Khai As'
+        "formatted_address": 'Smedgata 7, 4013 Stavanger, Norway',
+        "rating": '4.5',
+        "types": 'restaurant, food, point_of_interest, establishment,'
     },
     {
         "geometry": {
             "location": {lat: 58.971349, lng: 5.738650}
         },
-        "name": 'Mogul India',
-        "info": 'info for Mogul India'
+        "name": 'Mogul India Restaurant',
+        "formatted_address": 'Verksgata 9, 4013 Stavanger, Norway',
+        "rating": '4.6',
+        "types": 'restaurant, food, point_of_interest, establishment,'
     },
     {
         "geometry": {
             "location": {lat: 58.972237, lng: 5.732062}
         },
         "name": 'Delhi Bar & Restaurant',
-        "info": 'info for Delhi Bar & Restaurant'
+        "formatted_address": 'Kirkegata 36, 4006 Stavanger, Norway',
+        "rating": '3.9',
+        "types": 'restaurant, bar, food, point_of_interest, establishment,'
     }
 ];
 
-class Location {
+    class Location {
     constructor(data) {
-
-        let self = this;
 
         //data from google maps
         this.name = data.name;
         this.address = data.formatted_address;
         this.types = data.types;
         this.rating = data.rating;
-
         this.geometry = {
             location: {
                 "lat": data.geometry.location.lat,
                 "lng": data.geometry.location.lng
             }
         };
-
-
-        // this.info = data.info;
-
-        //data from foursquare
-
-
-        //create marker
         this.marker = new google.maps.Marker({
             position: this.geometry.location,
             title: this.name,
             map: map,
             animation: google.maps.Animation.DROP
         });
-
         this.marker.addListener('click', () => {
 
-            viewModel.setLocation(self);
+            viewModel.setLocation(this);
             setInfoWindowAndTriggerBounce();
         });
 
-        //get data from www.FourSquare.com
-        // queryFourSquare(this);
+        //get data from FourSquare
+        queryFourSquare(this);
 
-        //push the item into the observablearray
+        //push the item into the data-binded array
         viewModel.locationList.push(this);
     }
 }
@@ -172,7 +170,7 @@ function initAutoComplete() {
         } else {
             searchString = place.name + ' ' + place.formatted_address;
         }
-
+        //call apis
         queryGoogleMaps(searchString);
     });
 }
@@ -192,21 +190,43 @@ function queryGoogleMaps(query) {
 function callbackGoogleMaps(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         for (let i = 0; i < results.length; i++) {
-            debugger;
+        //manipulate the object so it's easier to instantiate
             let types = '';
-            //put categories associated with result into one string
-            results[i].types.forEach((item) => {
 
+            results[i].types.forEach((item) => {
                 types += item + ', ';
             });
             results[i].types = types;
-            debugger;
             results[i].geometry.location.lat = results[i].geometry.location.lat();
             results[i].geometry.location.lng = results[i].geometry.location.lng();
 
             new Location(results[i]);
         }
     }
+}
+
+function queryFourSquare(locationObject) {
+
+    const URL = 'https://api.foursquare.com/v2/venues/search?';
+    const CLIENT_ID = 'client_id=13H0KQ15M5RIOAEHKB11UVWGJMSLDD3GJE2WHNZYZGY2WWLT';
+    const CLIENT_SECRET = '&client_secret=D0FE0QLWIPPSTJEETRUM0IKURTWV1XD5W1WDTW20C5KW33OZ';
+    const DATE = '&v=20170818';
+    const LATLNG = '&ll=58.97,5.73';
+    const QUERY = '&query=' + locationObject.name;
+    const FULL_SEARCH_STRING = URL + CLIENT_ID + CLIENT_SECRET + DATE + LATLNG + QUERY;
+
+    $.ajax({
+        url: FULL_SEARCH_STRING,
+        context: locationObject
+    })
+        .done(function (data) {
+            this.phone = data.response.venues[0].contact.formattedPhone;
+            this.url = data.response.venues[0].url;
+        })
+        .fail(() => {
+            console.log('Could not load data from FourSquare');
+        });
+
 }
 
 function populateInitialLocations() {
@@ -248,42 +268,14 @@ function buildContentStringForInfoWindow(location) {
     return '<u>Data from Google maps</u>' + '</br></br>' +
         location.name + '</br>' +
         location.address + '</br>' +
-        'Rating: ' + location.rating + '</br></br>' +
-        'Keywords: ' + '<i>' + location.types + '</i>' + '</br>' +
-        location.postalCode + ' ' + location.city + '</br></br>' +
+        'Rating: ' + location.rating + '</br>' +
+        '#' + '<i>' + location.types + '</i>' + '</br></br>' +
+        '<u>Data from FourSquare</u>' + '</br></br>' +
         'Phone: ' + location.phone + '</br>' +
-        location.url;
+        'url: ' + location.url;
 }
 
-function queryFourSquare(locationObject) {
 
-    const URL = 'https://api.foursquare.com/v2/venues/search?';
-    const CLIENT_ID = 'client_id=13H0KQ15M5RIOAEHKB11UVWGJMSLDD3GJE2WHNZYZGY2WWLT';
-    const CLIENT_SECRET = '&client_secret=D0FE0QLWIPPSTJEETRUM0IKURTWV1XD5W1WDTW20C5KW33OZ';
-    const DATE = '&v=20170818';
-    const LATLNG = '&ll=58.97,5.73';
-    const QUERY = '&query=' + locationObject.name;
-
-    const FULL_SEARCH_STRING = URL + CLIENT_ID + CLIENT_SECRET + DATE + LATLNG + QUERY;
-
-    $.ajax({
-        url: FULL_SEARCH_STRING,
-        context: locationObject
-    })
-        .done(function (data) {
-
-       // this.name = data.response.venues[0].name;
-       this.address = data.response.venues[0].location.address;
-       this.phone = data.response.venues[0].contact.formattedPhone;
-       this.postalCode = data.response.venues[0].location.postalCode;
-       this.city = data.response.venues[0].location.city;
-       this.url = data.response.venues[0].url;
-    })
-        .fail(() => {
-            alert('Could not load data from FourSquare');
-        });
-
-}
 
 
 

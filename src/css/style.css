@@ -9,6 +9,7 @@ html, body, #wrapper, .container-fluid, .row, #page-content-wrapper, #map {
 li {
     color: white;
     cursor: pointer;
+    padding-left: 5px;
 }
 
 #map {
@@ -31,7 +32,12 @@ li {
     margin-top: 5px;
     margin-bottom: 15px;
     width: 240px;
+    line-height: 30px;
 
+}
+
+hr {
+    width: 95%;
 }
 
 
