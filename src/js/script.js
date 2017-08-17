@@ -4,6 +4,7 @@ let map;
 let viewModel;
 let infoWindow;
 let currentMarker;
+let service;
 
 const initialLocations = [
     {
@@ -49,14 +50,24 @@ class Location {
 
         let self = this;
 
+        //data from google maps
+        this.name = data.name;
+        this.address = data.formatted_address;
+        this.types = data.types;
+        this.rating = data.rating;
+
         this.geometry = {
             location: {
                 "lat": data.geometry.location.lat,
                 "lng": data.geometry.location.lng
             }
         };
-        this.name = data.name;
-        this.info = data.info;
+
+
+        // this.info = data.info;
+
+        //data from foursquare
+
 
         //create marker
         this.marker = new google.maps.Marker({
@@ -73,7 +84,7 @@ class Location {
         });
 
         //get data from www.FourSquare.com
-        queryFourSquare(this);
+        // queryFourSquare(this);
 
         //push the item into the observablearray
         viewModel.locationList.push(this);
@@ -107,19 +118,6 @@ class ViewModel {
                 }
             }
         };
-
-        self.search = () => {
-
-            //delay necessary for input field value to update before function is run
-            setTimeout(() => {
-
-                console.log(self.searchBarText());
-
-
-
-            }, 1);
-
-        };
     };
 }
 
@@ -130,16 +128,15 @@ window.mapCallback = () => {
     if (typeof google === 'object' && typeof google.maps === 'object') {
         initMap();
         initAutoComplete();
+        service = new google.maps.places.PlacesService(map);
 
         viewModel = new ViewModel();
         ko.applyBindings(viewModel);
 
         populateInitialLocations();
-
     } else {
         alert('Error, google maps could not load');
     }
-
 };
 
 function initMap() {
@@ -165,19 +162,51 @@ function initAutoComplete() {
 
     autocomplete.addListener('place_changed', () => {
         infowindow.close();
+
         let place = autocomplete.getPlace();
+        let searchString;
+
         if (!place.geometry) {
-            // User entered the name of a Place that was not suggested and
-            // pressed the Enter key, or the Place Details request failed.
-            window.alert("No details available for input: '" + place.name + "'");
+            //A non-autocomplete query was made. Use input field value as search string
+            searchString = viewModel.searchBarText();
+        } else {
+            searchString = place.name + ' ' + place.formatted_address;
         }
 
-        //make latlng compatible with Location objects
-        place.geometry.location.lat = place.geometry.location.lat();
-        place.geometry.location.lng = place.geometry.location.lng();
-
-        new Location(place);
+        queryGoogleMaps(searchString);
     });
+}
+
+function queryGoogleMaps(query) {
+
+    const stavanger = new google.maps.LatLng(58.97, 5.73);
+
+    let request = {
+        location: stavanger,
+        query: query
+    };
+
+    service.textSearch(request, callbackGoogleMaps);
+}
+
+function callbackGoogleMaps(results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+        for (let i = 0; i < results.length; i++) {
+            debugger;
+            let types = '';
+            //put categories associated with result into one string
+            results[i].types.forEach((item) => {
+
+                types += item + ', ';
+            });
+            results[i].types = types;
+            debugger;
+            results[i].geometry.location.lat = results[i].geometry.location.lat();
+            results[i].geometry.location.lng = results[i].geometry.location.lng();
+
+            new Location(results[i]);
+        }
+    }
 }
 
 function populateInitialLocations() {
@@ -197,7 +226,7 @@ function setInfoWindowAndTriggerBounce() {
         infoWindow = new google.maps.InfoWindow();
     }
 
-    let contentString = buildContentString(viewModel.currentLocation());
+    let contentString = buildContentStringForInfoWindow(viewModel.currentLocation());
 
     // Change content and marker with new currentLocation
     // infoWindow.setContent(viewModel.currentLocation().name);
@@ -215,23 +244,16 @@ function setInfoWindowAndTriggerBounce() {
     }
 }
 
-//build content string for infowindow
-function buildContentString(location) {
-    return location.name + '</br>' +
+function buildContentStringForInfoWindow(location) {
+    return '<u>Data from Google maps</u>' + '</br></br>' +
+        location.name + '</br>' +
         location.address + '</br>' +
-        location.postalCode + ' ' + location.city + '</br>' + '</br>' +
+        'Rating: ' + location.rating + '</br></br>' +
+        'Keywords: ' + '<i>' + location.types + '</i>' + '</br>' +
+        location.postalCode + ' ' + location.city + '</br></br>' +
         'Phone: ' + location.phone + '</br>' +
         location.url;
 }
-
-//when enter is pressed on search bar, launch search
-//todo pretty much like this, but no jquery (use event binding)
-$(document).keypress(function (e) {
-    if (e.which === 13) {
-        searchForData();
-    }
-});
-
 
 function queryFourSquare(locationObject) {
 
@@ -242,15 +264,15 @@ function queryFourSquare(locationObject) {
     const LATLNG = '&ll=58.97,5.73';
     const QUERY = '&query=' + locationObject.name;
 
-    const searchString = URL + CLIENT_ID + CLIENT_SECRET + DATE + LATLNG + QUERY;
+    const FULL_SEARCH_STRING = URL + CLIENT_ID + CLIENT_SECRET + DATE + LATLNG + QUERY;
 
     $.ajax({
-        url: searchString,
+        url: FULL_SEARCH_STRING,
         context: locationObject
     })
         .done(function (data) {
 
-       this.name = data.response.venues[0].name;
+       // this.name = data.response.venues[0].name;
        this.address = data.response.venues[0].location.address;
        this.phone = data.response.venues[0].contact.formattedPhone;
        this.postalCode = data.response.venues[0].location.postalCode;
