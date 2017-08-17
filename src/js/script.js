@@ -1,7 +1,6 @@
 'use strict';
 
 let map;
-let service;
 let viewModel;
 let infoWindow;
 let currentMarker;
@@ -112,19 +111,20 @@ class ViewModel {
 
 //callback function for google map async load
 window.mapCallback = () => {
-    initMap();
-    initAutoComplete();
 
-    viewModel = new ViewModel();
-    ko.applyBindings(viewModel);
+    //if google maps loaded successfully
+    if (typeof google === 'object' && typeof google.maps === 'object') {
+        initMap();
+        initAutoComplete();
 
-    //populate listview with initial locations
-    initialLocations.forEach((locationItem) => {
-        new Location(locationItem);
-    });
+        viewModel = new ViewModel();
+        ko.applyBindings(viewModel);
 
-    service = new google.maps.places.PlacesService(map);
+        populateInitialLocations();
 
+    } else {
+        alert('Error, google maps could not load');
+    }
 
 };
 
@@ -166,18 +166,10 @@ function initAutoComplete() {
     });
 }
 
-function searchForData() {
-
-    service.textSearch(viewModel.searchBarText, searchCallback());
-}
-
-function searchCallback(results, status) {
-    debugger;
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-        results.forEach((result) => {
-            createMarker(result);
-        });
-    }
+function populateInitialLocations() {
+    initialLocations.forEach((locationItem) => {
+        new Location(locationItem);
+    });
 }
 
 function setInfoWindowAndTriggerBounce() {
@@ -219,7 +211,7 @@ function buildContentString(location) {
 }
 
 //when enter is pressed on search bar, launch search
-//pretty much like this, but no jquery (use event binding)
+//todo pretty much like this, but no jquery (use event binding)
 $(document).keypress(function (e) {
     if (e.which === 13) {
         searchForData();
