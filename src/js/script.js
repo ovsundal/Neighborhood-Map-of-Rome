@@ -191,8 +191,7 @@ function setInfoWindowAndTriggerBounce() {
         infoWindow = new google.maps.InfoWindow();
     }
 
-    let contentString = '<div>' + viewModel.currentLocation().name + '</div>' +
-        '<div>' + viewModel.currentLocation().url + '</div>';
+    let contentString = buildContentString(viewModel.currentLocation());
 
     // Change content and marker with new currentLocation
     // infoWindow.setContent(viewModel.currentLocation().name);
@@ -208,6 +207,15 @@ function setInfoWindowAndTriggerBounce() {
     } else {
         viewModel.currentLocation().marker.setAnimation(google.maps.Animation.BOUNCE);
     }
+}
+
+//build content string for infowindow
+function buildContentString(location) {
+    return location.name + '</br>' +
+        location.address + '</br>' +
+        location.postalCode + ' ' + location.city + '</br>' + '</br>' +
+        'Phone: ' + location.phone + '</br>' +
+        location.url;
 }
 
 //when enter is pressed on search bar, launch search
@@ -235,23 +243,20 @@ function queryFourSquare(locationObject) {
     $.ajax({
         url: searchString,
         context: locationObject
-    }).done(function (data) {
-
-       this.url = data.response.venues[0].url;
-
-debugger;
     })
+        .done(function (data) {
 
-    // $.getJSON(searchString, "", function (success, status) {
-    //
-    //     if(status === 'success') {
-    //         debugger;
-    //     } else {
-    //         //kan ikke laste data
-    //         debugger;
-    //     }
-    //
-    // });
+       this.name = data.response.venues[0].name;
+       this.address = data.response.venues[0].location.address;
+       this.phone = data.response.venues[0].contact.formattedPhone;
+       this.postalCode = data.response.venues[0].location.postalCode;
+       this.city = data.response.venues[0].location.city;
+       this.url = data.response.venues[0].url;
+    })
+        .fail(() => {
+            alert('Could not load data from FourSquare');
+        });
+
 }
 
 
