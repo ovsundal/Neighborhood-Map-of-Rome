@@ -72,6 +72,8 @@ class Location {
         //     setInfoWindowAndTriggerBounce()
         // });
 
+        this.phone = queryFourSquare(this);
+
         //push the item into the observablearray
         viewModel.locationList.push(this);
     }
@@ -121,6 +123,7 @@ window.mapCallback = () => {
     });
 
     service = new google.maps.places.PlacesService(map);
+
 
 };
 
@@ -209,4 +212,27 @@ $(document).keypress(function (e) {
     }
 });
 
-//need to have error handlign and filtering of the result
+//todo  need to have error handling and filtering of the result
+
+
+function queryFourSquare(locationObject) {
+
+    const URL = 'https://api.foursquare.com/v2/venues/search?';
+    const CLIENT_ID = 'client_id=13H0KQ15M5RIOAEHKB11UVWGJMSLDD3GJE2WHNZYZGY2WWLT';
+    const CLIENT_SECRET = '&client_secret=D0FE0QLWIPPSTJEETRUM0IKURTWV1XD5W1WDTW20C5KW33OZ';
+    const DATE = '&v=20170818';
+    const LATLNG = '&ll=58.97,5.73';
+    const QUERY = '&query=' + locationObject.name;
+
+    const searchString = URL + CLIENT_ID + CLIENT_SECRET + DATE + LATLNG + QUERY;
+
+debugger;
+    $.getJSON(searchString, "", function (success) {
+
+        debugger;
+    });
+}
+
+
+
+
