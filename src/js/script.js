@@ -47,6 +47,8 @@ const initialLocations = [
 class Location {
     constructor(data) {
 
+        let self = this;
+
         this.geometry = {
             location: {
                 "lat": data.geometry.location.lat,
@@ -64,12 +66,11 @@ class Location {
             animation: google.maps.Animation.DROP
         });
 
-        //todo add listener to createMarker function
-        // QUESTION: listener below returns ..."read property 'apply' of undefined"...What is wrong?
-        // this.marker.addListener('click', function() {
-        //     viewModel.setLocation();
-        //     setInfoWindowAndTriggerBounce()
-        // });
+        this.marker.addListener('click', () => {
+
+            viewModel.setLocation(self);
+            setInfoWindowAndTriggerBounce();
+        });
 
         //get data from www.FourSquare.com
         queryFourSquare(this);
@@ -217,8 +218,6 @@ $(document).keypress(function (e) {
         searchForData();
     }
 });
-
-//todo  need to have error handling and filtering of the result
 
 
 function queryFourSquare(locationObject) {
