@@ -72,7 +72,8 @@ class Location {
         //     setInfoWindowAndTriggerBounce()
         // });
 
-        this.phone = queryFourSquare(this);
+        //get data from www.FourSquare.com
+        queryFourSquare(this);
 
         //push the item into the observablearray
         viewModel.locationList.push(this);
@@ -190,8 +191,13 @@ function setInfoWindowAndTriggerBounce() {
         infoWindow = new google.maps.InfoWindow();
     }
 
+    let contentString = '<div>' + viewModel.currentLocation().name + '</div>' +
+        '<div>' + viewModel.currentLocation().url + '</div>';
+
     // Change content and marker with new currentLocation
-    infoWindow.setContent(viewModel.currentLocation().name);
+    // infoWindow.setContent(viewModel.currentLocation().name);
+    infoWindow.setContent(contentString);
+
     infoWindow.open(map, viewModel.currentLocation().marker);
 
     //make marker bounce
@@ -226,11 +232,26 @@ function queryFourSquare(locationObject) {
 
     const searchString = URL + CLIENT_ID + CLIENT_SECRET + DATE + LATLNG + QUERY;
 
-debugger;
-    $.getJSON(searchString, "", function (success) {
+    $.ajax({
+        url: searchString,
+        context: locationObject
+    }).done(function (data) {
 
-        debugger;
-    });
+       this.url = data.response.venues[0].url;
+
+debugger;
+    })
+
+    // $.getJSON(searchString, "", function (success, status) {
+    //
+    //     if(status === 'success') {
+    //         debugger;
+    //     } else {
+    //         //kan ikke laste data
+    //         debugger;
+    //     }
+    //
+    // });
 }
 
 
