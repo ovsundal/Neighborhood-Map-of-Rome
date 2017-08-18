@@ -54,7 +54,7 @@
                        type="text" class="search-box" placeholder="Search" id="searchBox"></li>
         </ul>
         <ul class="sidebar-nav" data-bind="foreach: locationList">
-            <li data-bind="text: name, click: $parent.setLocation"></li>
+            <li data-bind="text: name, click: $parent.setLocation, visible: $data.isVisible == true"></li>
             <hr>
         </ul>
 

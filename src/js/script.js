@@ -140,8 +140,6 @@ class Location {
         //get data from FourSquare
         queryFourSquare(this);
 
-        //push the item into the data-binded array
-
         viewModel.locationList.push(this);
     }
 }
@@ -165,6 +163,18 @@ class ViewModel {
 
         self.toggleFilterAll = () => {
             this.filterAll(!this.filterAll());
+
+            let makeAllLocationsVisible = this.filterAll();
+
+            //set all items visible=true if 'All' filter is active, if not set all items visible=false
+            self.locationList().forEach((location) => {
+
+                if(makeAllLocationsVisible) {
+                    location.isVisible = true;
+                } else {
+                    location.isVisible = false;
+                }
+            })
         };
 
         self.toggleFilterEatDrink = () => {
@@ -340,7 +350,7 @@ function queryFourSquare(locationObject) {
             }
         })
         .fail(() => {
-            console.log('Could not load data from FourSquare');
+            console.log('Could not load data from FourSquare, either server is down or data limit has been reached');
         });
 }
 
@@ -391,8 +401,6 @@ function buildContentStringForInfoWindow(location) {
 }
 
 //todo add gulp and dist
-//todo check that there are no duplicates in list SHOULD BE DONE
-//todo when click on list screen should center on location if out of bounds
 //todo add filter function
 
 
