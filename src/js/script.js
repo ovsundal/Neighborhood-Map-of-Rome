@@ -52,6 +52,33 @@ const initialLocations = [
         "formatted_address": 'Kirkegata 36, 4006 Stavanger, Norway',
         "rating": '3.9',
         "types": 'restaurant, bar, food, point_of_interest, establishment,'
+    },
+    {
+        "geometry": {
+            "location": {lat: 58.969254, lng: 5.727093}
+        },
+        "name": 'Comfort Hotel Square',
+        "formatted_address": 'Løkkeveien 41, 4008 Stavanger, Norway',
+        "rating": '4.2',
+        "types": 'lodging, point_of_interest, establishment,'
+    },
+    {
+        "geometry": {
+            "location": {lat: 58.970708, lng: 5.744269}
+        },
+        "name": 'Scandic Stavanger City Hotel',
+        "formatted_address": 'Reidar Berges Gate 7, 4013 Stavanger, Norway',
+        "rating": '4.2',
+        "types": 'lodging, point_of_interest, establishment,'
+    },
+    {
+        "geometry": {
+            "location": {lat: 58.971122, lng: 5.735619}
+        },
+        "name": 'Myhregaarden Hotel',
+        "formatted_address": 'Nygata 24, 4006 Stavanger, Norway',
+        "rating": '3.6',
+        "types": 'lodging, point_of_interest, establishment, '
     }
 ];
 
@@ -150,7 +177,13 @@ class ViewModel {
         };
 
         self.resetList = () => {
+            //remove markers
+            self.locationList().forEach((item) => {
+                item.marker.setMap(null);
+            });
+
             self.locationList.removeAll();
+
             populateInitialLocations();
         }
     };
@@ -238,7 +271,7 @@ function callbackGoogleMaps(results, status) {
             results[i].geometry.location.lng = results[i].geometry.location.lng();
 
             //check that location already doesn't exist
-            viewModel.locationList.forEach((item) => {
+            viewModel.locationList().forEach((item) => {
                 if(item.name === results[i].name) {
                     locationIsUnique = false;
                 }
