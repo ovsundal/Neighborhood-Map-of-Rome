@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="css/simple-sidebar.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 
@@ -22,8 +23,28 @@
 <div id="wrapper" data-bind="css: { toggled: menuVisible() == true}">
 
     <button class="btn btn-default floating-panel"
-            data-bind="click: toggleMenu, css: { toggled: menuVisible() == true}">
-        <i class="fa fa-bars" aria-hidden="true"></i></button>
+                data-bind="click: toggleMenu, css: { toggled: menuVisible() == true}">
+            <i class="fa fa-bars" aria-hidden="true"></i></button>
+
+    <!--<button id="filter-box" class="btn btn-default floating-panel"-->
+            <!--data-bind="css: { toggled: menuVisible() == true}">-->
+        <!--<i class="fa fa-filter" aria-hidden="true"></i></button>-->
+
+
+        <button id="filter-box" class="btn btn-default floating-panel"
+                data-bind="click: filtering, css: { toggled: menuVisible() == true}">
+            <i class="fa fa-filter" aria-hidden="true"></i></button>
+
+        <div id="Demo" class="w3-dropdown-content w3-bar-block floating-panel">
+            <a href="#" class="w3-bar-item w3-button">Link 1</a>
+            <a href="#" class="w3-bar-item w3-button">Link 2</a>
+            <a href="#" class="w3-bar-item w3-button">Link 3</a>
+        </div>
+
+
+
+
+
 
     <!-- Sidebar -->
     <div id="sidebar-wrapper">

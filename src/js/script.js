@@ -55,7 +55,7 @@ const initialLocations = [
     }
 ];
 
-    class Location {
+class Location {
     constructor(data) {
 
         //data from google maps
@@ -116,6 +116,15 @@ class ViewModel {
                 }
             }
         };
+
+        self.filtering = () => {
+            var x = document.getElementById("Demo");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+            }
+        }
     };
 }
 
@@ -273,7 +282,6 @@ function buildContentStringForInfoWindow(location) {
         'Phone: ' + location.phone + '</br>' +
         'url: ' + location.url;
 }
-
 
 
 

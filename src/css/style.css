@@ -33,11 +33,20 @@ li {
     margin-bottom: 15px;
     width: 240px;
     line-height: 30px;
+}
 
+#filter-box {
+    position: absolute;
+    margin-top: 60px;
 }
 
 hr {
     width: 95%;
+}
+
+.w3-dropdown-content {
+    position: absolute;
+    margin-top: 105px;
 }
 
 
