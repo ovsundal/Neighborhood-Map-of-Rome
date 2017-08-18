@@ -97,9 +97,29 @@ class ViewModel {
         self.menuVisible = ko.observable(true);
         self.searchBarText = ko.observable("");
         self.locationList = ko.observableArray([]);
+        self.filterAll = ko.observable(true);
+        self.filterEatDrink = ko.observable(false);
+        self.filterShopping = ko.observable(false);
+        self.filterHotel = ko.observable(false);
 
         self.toggleMenu = () => {
             this.menuVisible(!this.menuVisible());
+        };
+
+        self.toggleFilterAll = () => {
+            this.filterAll(!this.filterAll());
+        };
+
+        self.toggleFilterEatDrink = () => {
+            this.filterEatDrink(!this.filterEatDrink());
+        };
+
+        self.toggleFilterShopping = () => {
+            this.filterShopping(!this.filterShopping());
+        };
+
+        self.toggleFilterHotel = () => {
+            this.filterHotel(!this.filterHotel());
         };
 
         self.currentLocation = ko.observable(self.locationList()[0]);
