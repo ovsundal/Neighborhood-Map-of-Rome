@@ -79,6 +79,33 @@ const initialLocations = [
         "formatted_address": 'Nygata 24, 4006 Stavanger, Norway',
         "rating": '3.6',
         "types": 'lodging, point_of_interest, establishment, '
+    },
+    {
+        "geometry": {
+            "location": {lat: 58.970747, lng: 5.735958}
+        },
+        "name": 'Arkaden Torgterrassen',
+        "formatted_address": 'Klubbgata 5, 4013 Stavanger, Norway',
+        "rating": '3.9',
+        "types": 'shopping_mall, point_of_interest, establishment, '
+    },
+    {
+        "geometry": {
+            "location": {lat: 58.969797, lng: 5.728003}
+        },
+        "name": 'Straen Senteret',
+        "formatted_address": 'Lars Hertervigs gate 6, 4005 Stavanger, Norway',
+        "rating": '3.8',
+        "types": 'shopping_mall, point_of_interest, establishment, '
+    },
+    {
+        "geometry": {
+            "location": {lat: 58.971772, lng: 5.737264}
+        },
+        "name": 'Magasinblaa',
+        "formatted_address": 'Verksgata 2, 4013 Stavanger, Norway',
+        "rating": '3.8',
+        "types": 'shopping_mall, point_of_interest, establishment, '
     }
 ];
 
@@ -299,13 +326,22 @@ function queryFourSquare(locationObject) {
         context: locationObject
     })
         .done(function (data) {
-            this.phone = data.response.venues[0].contact.formattedPhone;
-            this.url = data.response.venues[0].url;
+
+            if(data.response.venues[0].contact.formattedPhone) {
+                this.phone = data.response.venues[0].contact.formattedPhone;
+            } else {
+                this.phone = 'No data available';
+            }
+
+            if(data.response.venues[0].url) {
+                this.url = data.response.venues[0].url;
+            } else {
+                this.url = 'No data available';
+            }
         })
         .fail(() => {
             console.log('Could not load data from FourSquare');
         });
-
 }
 
 function populateInitialLocations() {
