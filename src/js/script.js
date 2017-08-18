@@ -112,8 +112,6 @@ const initialLocations = [
 class Location {
     constructor(data) {
 
-        this.isVisible = true;
-
         //data from google maps
         this.name = data.name;
         this.address = data.formatted_address;
@@ -156,37 +154,69 @@ class ViewModel {
         self.filterEatDrink = ko.observable(false);
         self.filterShopping = ko.observable(false);
         self.filterHotel = ko.observable(false);
+        self.locationVisible = ko.observable(true);
+
+
+
 
         self.toggleMenu = () => {
             this.menuVisible(!this.menuVisible());
         };
 
+
         self.toggleFilterAll = () => {
             this.filterAll(!this.filterAll());
-
-            let makeAllLocationsVisible = this.filterAll();
-
-            //set all items visible=true if 'All' filter is active, if not set all items visible=false
-            self.locationList().forEach((location) => {
-
-                if(makeAllLocationsVisible) {
-                    location.isVisible = true;
-                } else {
-                    location.isVisible = false;
-                }
-            })
+            self.applyFilter();
         };
 
         self.toggleFilterEatDrink = () => {
             this.filterEatDrink(!this.filterEatDrink());
+            self.applyFilter();
         };
 
         self.toggleFilterShopping = () => {
             this.filterShopping(!this.filterShopping());
+            self.applyFilter();
         };
 
         self.toggleFilterHotel = () => {
             this.filterHotel(!this.filterHotel());
+            self.applyFilter();
+        };
+
+        self.applyFilter = () => {
+
+            self.locationList().forEach((location) => {
+
+                //everything starts of not shown. If any filters are toggled, see if location.type string matches
+                //any items in the filterlist. If so, set it visible
+
+                let category = location.types;
+                self.locationVisible(false);
+
+                //if all is selected, make everything visible
+                if(this.filterAll()) {
+                    self.locationVisible(true);
+                }
+                else if(this.filterEatDrink()) {
+                    //check if location category contains word 'food', if so - show
+                    if(category.includes('food')) {
+                        self.locationVisible(true);
+                    }
+                }
+                else if(this.filterShopping()) {
+                    //check if location category contains word 'shopping_mall', if so - show
+                    if(category.includes('shopping_mall')) {
+                        self.locationVisible(true);
+                    }
+                }
+                else if(this.filterHotel()) {
+                    //check if location category contains word 'lodging', if so - show
+                    if(category.includes('lodging')) {
+                        self.locationVisible(true);
+                    }
+                } else;
+            })
         };
 
         self.currentLocation = ko.observable(self.locationList()[0]);
@@ -204,7 +234,7 @@ class ViewModel {
             }
         };
 
-        self.filtering = () => {
+        self.toggleFilterMenu = () => {
             let x = document.getElementById("Demo");
             if (x.className.indexOf("w3-show") == -1) {
                 x.className += " w3-show";
