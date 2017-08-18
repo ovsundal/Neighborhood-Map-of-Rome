@@ -58,6 +58,8 @@ const initialLocations = [
 class Location {
     constructor(data) {
 
+        this.isVisible = true;
+
         //data from google maps
         this.name = data.name;
         this.address = data.formatted_address;
@@ -144,6 +146,11 @@ class ViewModel {
             } else {
                 x.className = x.className.replace(" w3-show", "");
             }
+        }
+
+        self.resetList = () => {
+debugger;
+
         }
     };
 }
@@ -303,7 +310,10 @@ function buildContentStringForInfoWindow(location) {
         'url: ' + location.url;
 }
 
-
+//todo add a refresh button to restart with initial location (font-awesome: undo)
+//todo add gulp and dist
+//todo check that there are no duplicates in list
+//todo when click on list screen should center on location if out of bounds
 
 
 

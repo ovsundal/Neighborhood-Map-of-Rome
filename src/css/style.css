@@ -35,7 +35,7 @@ li {
     line-height: 30px;
 }
 
-#filter-box {
+#filter-button {
     position: absolute;
     margin-top: 60px;
 }
@@ -53,4 +53,8 @@ hr {
     background-color: limegreen;
 }
 
+#reset-button {
+    position: absolute;
+    margin-top: 115px;
+}
 
