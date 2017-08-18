@@ -55,10 +55,9 @@
                        type="text" class="search-box" placeholder="Search" id="searchBox"></li>
         </ul>
         <ul class="sidebar-nav" data-bind="foreach: locationList">
-            <li data-bind="text: name, click: $parent.setLocation, visible: $parent.locationVisible() == true"></li>
+            <li data-bind="text: name, click: $parent.setLocation, visible: locationVisible() == true"></li>
             <hr>
         </ul>
-
     </div>
     <!-- /#sidebar-wrapper -->
 
@@ -85,5 +84,6 @@
 <script src="js/script.js"></script>
 <script async
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeT6y8aANlhj_YEp863iwST2drIlpQ8vk&libraries=places&callback=mapCallback"></script>
+<!--todo: add error handling for no return-->
 </body>
 </html>

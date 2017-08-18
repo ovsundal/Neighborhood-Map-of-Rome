@@ -112,6 +112,8 @@ const initialLocations = [
 class Location {
     constructor(data) {
 
+        this.locationVisible = ko.observable(true);
+
         //data from google maps
         this.name = data.name;
         this.address = data.formatted_address;
@@ -192,28 +194,37 @@ class ViewModel {
                 //any items in the filterlist. If so, set it visible
 
                 let category = location.types;
-                self.locationVisible(false);
+                location.locationVisible(false);
+                location.marker.setMap(null);
+
+                debugger;
+
+//todo remove markers
 
                 //if all is selected, make everything visible
                 if(this.filterAll()) {
-                    self.locationVisible(true);
+                    location.locationVisible(true);
+                    location.marker.setMap(map);
                 }
                 else if(this.filterEatDrink()) {
                     //check if location category contains word 'food', if so - show
                     if(category.includes('food')) {
-                        self.locationVisible(true);
+                        location.locationVisible(true);
+                        location.marker.setMap(map);
                     }
                 }
                 else if(this.filterShopping()) {
                     //check if location category contains word 'shopping_mall', if so - show
                     if(category.includes('shopping_mall')) {
-                        self.locationVisible(true);
+                        location.locationVisible(true);
+                        location.marker.setMap(map);
                     }
                 }
                 else if(this.filterHotel()) {
                     //check if location category contains word 'lodging', if so - show
                     if(category.includes('lodging')) {
-                        self.locationVisible(true);
+                        location.locationVisible(true);
+                        location.marker.setMap(map);
                     }
                 } else;
             })
