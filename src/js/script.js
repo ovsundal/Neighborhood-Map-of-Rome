@@ -87,6 +87,7 @@ class Location {
         queryFourSquare(this);
 
         //push the item into the data-binded array
+
         viewModel.locationList.push(this);
     }
 }
@@ -140,13 +141,13 @@ class ViewModel {
         };
 
         self.filtering = () => {
-            var x = document.getElementById("Demo");
+            let x = document.getElementById("Demo");
             if (x.className.indexOf("w3-show") == -1) {
                 x.className += " w3-show";
             } else {
                 x.className = x.className.replace(" w3-show", "");
             }
-        }
+        };
 
         self.resetList = () => {
             self.locationList.removeAll();
@@ -227,6 +228,7 @@ function callbackGoogleMaps(results, status) {
         for (let i = 0; i < results.length; i++) {
         //manipulate the object so it's easier to instantiate
             let types = '';
+            let locationIsUnique = true;
 
             results[i].types.forEach((item) => {
                 types += item + ', ';
@@ -235,7 +237,16 @@ function callbackGoogleMaps(results, status) {
             results[i].geometry.location.lat = results[i].geometry.location.lat();
             results[i].geometry.location.lng = results[i].geometry.location.lng();
 
-            new Location(results[i]);
+            //check that location already doesn't exist
+            viewModel.locationList.forEach((item) => {
+                if(item.name === results[i].name) {
+                    locationIsUnique = false;
+                }
+            });
+
+            if(locationIsUnique) {
+                new Location(results[i]);
+            }
         }
     }
 }
@@ -311,8 +322,9 @@ function buildContentStringForInfoWindow(location) {
 }
 
 //todo add gulp and dist
-//todo check that there are no duplicates in list
+//todo check that there are no duplicates in list SHOULD BE DONE
 //todo when click on list screen should center on location if out of bounds
+//todo add filter function
 
 
 
