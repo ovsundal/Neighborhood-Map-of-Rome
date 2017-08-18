@@ -149,8 +149,8 @@ class ViewModel {
         }
 
         self.resetList = () => {
-debugger;
-
+            self.locationList.removeAll();
+            populateInitialLocations();
         }
     };
 }
@@ -310,7 +310,6 @@ function buildContentStringForInfoWindow(location) {
         'url: ' + location.url;
 }
 
-//todo add a refresh button to restart with initial location (font-awesome: undo)
 //todo add gulp and dist
 //todo check that there are no duplicates in list
 //todo when click on list screen should center on location if out of bounds
