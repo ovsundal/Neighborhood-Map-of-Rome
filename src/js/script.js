@@ -150,7 +150,6 @@ function initMap() {
 function initAutoComplete() {
 
     let input = document.getElementById('searchBox');
-    // let input = viewModel.searchBarText();
 
     let autocomplete = new google.maps.places.Autocomplete(input);
     autocomplete.bindTo('bounds', map);
@@ -170,7 +169,7 @@ function initAutoComplete() {
         } else {
             searchString = place.name + ' ' + place.formatted_address;
         }
-        //call apis
+
         queryGoogleMaps(searchString);
     });
 }
