@@ -190,16 +190,12 @@ class ViewModel {
 
             self.locationList().forEach((location) => {
 
-                //everything starts of not shown. If any filters are toggled, see if location.type string matches
+                //all items starts of not shown. If any filters are toggled, see if location.type string matches
                 //any items in the filterlist. If so, set it visible
 
                 let category = location.types;
                 location.locationVisible(false);
                 location.marker.setMap(null);
-
-                debugger;
-
-//todo remove markers
 
                 //if all is selected, make everything visible
                 if(this.filterAll()) {
@@ -378,20 +374,28 @@ function queryFourSquare(locationObject) {
     })
         .done(function (data) {
 
-            if(data.response.venues[0].contact.formattedPhone) {
-                this.phone = data.response.venues[0].contact.formattedPhone;
-            } else {
-                this.phone = 'No data available';
-            }
+            // this.phone = 'No data available';
+            this.url = 'No data available';
+
+            // if(undefined !== data.response.venues[0].contact.formattedPhone) {
+            //     this.phone = data.response.venues[0].contact.formattedPhone;
+            // }
 
             if(data.response.venues[0].url) {
                 this.url = data.response.venues[0].url;
-            } else {
-                this.url = 'No data available';
             }
-        })
-        .fail(() => {
-            console.log('Could not load data from FourSquare, either server is down or data limit has been reached');
+
+        }) //todo: get context for .fail
+        .fail((message) => {
+
+            if(message.status === 429) {
+                debugger;
+                this.phone = 'No data available - data limit reached';
+                this.url = 'No data available - data limit reached';
+            } else {
+                this.phone = 'Could not load data';
+                this.url = 'Could not load data';
+            }
         });
 }
 
@@ -441,8 +445,11 @@ function buildContentStringForInfoWindow(location) {
         'url: ' + location.url;
 }
 
+function googleMapsFailed() {
+    alert('Error - Google maps failed to load');
+}
+
 //todo add gulp and dist
-//todo add filter function
 
 
 
