@@ -40,8 +40,8 @@ gulp.task('js-min', () => {
     gulp.src('./src/js/script.js')
         .pipe(jsmin())
         .pipe(rename({suffix: '.min'}))
-        .pipe(gulp.dest('/src/js/'))
-        .pipe(gulp.dest('/docs/js/'))
+        .pipe(gulp.dest('src/js/'))
+        .pipe(gulp.dest('docs/js/'))
         .pipe(gulp.dest('dist/js/'));
 });
 
