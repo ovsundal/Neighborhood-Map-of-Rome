@@ -5,9 +5,10 @@ let gulp = require('gulp');
 let htmlmin = require('gulp-htmlmin');
 let cleanCSS = require('gulp-clean-css');
 let concat = require('gulp-concat');
-let minifyjs = require('gulp-js-minify');
+let jsmin = require('gulp-jsmin');
+let rename = require('gulp-rename');
 
-gulp.task('default', ['html-minify', 'watch:html', 'css-minify', 'watch:css', 'js-minify', 'watch:js']);
+gulp.task('default', ['html-minify', 'watch:html', 'css-minify', 'watch:css', 'js-min', 'watch:js']);
 
 //HTML minify
 gulp.task('html-minify', () => {
@@ -33,13 +34,14 @@ gulp.task('watch:css', () => {
     gulp.watch('src/css/*.css', ['css-minify']);
 });
 
-//JS minify
-gulp.task('js-minify', () => {
-    gulp.src(['src/js/script.js'])
-        .pipe(minifyjs())
+gulp.task('js-min', () => {
+    gulp.src('./src/js/script.js')
+        .pipe(jsmin())
+        .pipe(rename({suffix: '.min'}))
+        .pipe(gulp.dest('/src/js/'))
         .pipe(gulp.dest('dist/js/'));
 });
 
 gulp.task('watch:js', () => {
-    gulp.watch('src/js/*.js', ['js-minify']);
+    gulp.watch('src/js/*.js', ['js-min']);
 });
