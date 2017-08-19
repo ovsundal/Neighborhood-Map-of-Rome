@@ -4,7 +4,7 @@
 selection of dining places. Each selection is pinned on the map, 
 and clicking the pin gives more information.</p>
 
-<p>To launch this project, open /dist/index.html in any web-browser, 
+<p>To launch this project, open /src/index.html in any web-browser, 
 or [click here](https://www.google.com). (CHANGE URL)</p>
 
 <p>Information is provided through the Google Maps/Places and Foursquare API. 
