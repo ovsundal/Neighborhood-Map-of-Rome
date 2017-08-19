@@ -4,8 +4,7 @@
 selection of dining places. Each selection is pinned on the map, 
 and clicking the pin gives more information.</p>
 
-<p>To launch this project, open /src/index.html in any web-browser, 
-or [click here](https://www.google.com). (CHANGE URL)</p>
+<p>To launch this project, open /src/index.html in any web-browser</p>
 
 <p>Information is provided through the Google Maps/Places and Foursquare API. 
 Code structure follows Knockoutjs MVVM (Model-View-ViewModel) pattern.</p>
