@@ -14,6 +14,7 @@ gulp.task('default', ['html-minify', 'watch:html', 'css-minify', 'watch:css', 'j
 gulp.task('html-minify', () => {
     return gulp.src('src/index.html')
         .pipe(htmlmin({collapseWhitespace: true}))
+        .pipe(gulp.dest('docs/'))
         .pipe(gulp.dest('dist/'));
 });
 
@@ -27,6 +28,7 @@ gulp.task('css-minify', () => {
         .pipe(cleanCSS({compatibility: 'ie8'}))
         .pipe(concat('style.min.css'))
         .pipe(gulp.dest('src/css/'))
+        .pipe(gulp.dest('docs/css'))
         .pipe(gulp.dest('dist/css/'));
 });
 
@@ -39,6 +41,7 @@ gulp.task('js-min', () => {
         .pipe(jsmin())
         .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest('/src/js/'))
+        .pipe(gulp.dest('/docs/js/'))
         .pipe(gulp.dest('dist/js/'));
 });
 
