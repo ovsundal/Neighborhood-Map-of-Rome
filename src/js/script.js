@@ -164,22 +164,55 @@ class ViewModel {
 
 
         self.toggleFilterAll = () => {
-            this.filterAll(!this.filterAll());
+
+            //make sure only one filter can be active at a time
+            if(!this.filterAll()) {
+                this.filterAll(!this.filterAll());
+                this.filterEatDrink(false);
+                this.filterShopping(false);
+                this.filterHotel(false);
+            } else {
+                this.filterAll(!this.filterAll());
+            }
             self.applyFilter();
         };
 
         self.toggleFilterEatDrink = () => {
-            this.filterEatDrink(!this.filterEatDrink());
+
+            if(!this.filterEatDrink()) {
+                this.filterEatDrink(!this.filterEatDrink());
+                this.filterAll(false);
+                this.filterShopping(false);
+                this.filterHotel(false);
+            } else {
+                this.filterEatDrink(!this.filterEatDrink());
+            }
             self.applyFilter();
         };
 
         self.toggleFilterShopping = () => {
-            this.filterShopping(!this.filterShopping());
+
+            if(!this.filterShopping()) {
+                this.filterShopping(!this.filterShopping());
+                this.filterAll(false);
+                this.filterEatDrink(false);
+                this.filterHotel(false);
+            } else {
+                this.filterShopping(!this.filterShopping());
+            }
             self.applyFilter();
         };
 
         self.toggleFilterHotel = () => {
-            this.filterHotel(!this.filterHotel());
+
+            if(!this.filterHotel()) {
+                this.filterHotel(!this.filterHotel());
+                this.filterAll(false);
+                this.filterEatDrink(false);
+                this.filterShopping(false);
+            } else {
+                this.filterHotel(!this.filterHotel());
+            }
             self.applyFilter();
         };
 
