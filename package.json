@@ -1,0 +1,27 @@
+{
+  "name": "neighborhood-map-of-stavanger",
+  "version": "1.0.0",
+  "description": "<p>This project displays a map of the city Stavanger with a predetermined \r selection of dining places. Each selection is pinned on the map, \r and clicking the pin gives more information.</p>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ovsundal/Neighborhood-Map-of-Stavanger.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ovsundal/Neighborhood-Map-of-Stavanger/issues"
+  },
+  "homepage": "https://github.com/ovsundal/Neighborhood-Map-of-Stavanger#readme",
+  "devDependencies": {
+    "gulp-clean-css": "^3.7.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-js-minify": "0.0.3",
+    "gulp-minify": "^1.0.0",
+    "gulp-uglify": "^3.0.0"
+  }
+}

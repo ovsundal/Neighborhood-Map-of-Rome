@@ -9,103 +9,102 @@ let service;
 const initialLocations = [
     {
         "geometry": {
-            "location": {lat: 58.970936, lng: 5.732062}
+            "location": {"lat": 58.970936, "lng": 5.732062}
         },
-        "name": 'Døgnvill Burger Stavanger',
-        "formatted_address": 'Skagen 13, 4006 Stavanger, Norway',
-        "rating": '4.5',
-        "types": 'bar, restaurant, food, point_of_interest, establishment, '
-    }
-    ,
-    {
-        "geometry": {
-            "location": {lat: 58.970818, lng: 5.735233}
-        },
-        "name": 'Steam Kaffebar Stavanger',
-        "formatted_address": 'Klubbgata 5, 4013 Stavanger, Norway',
-        "rating": '4.4',
-        "types": 'cafe, food, store, point_of_interest, establishment,'
+        "name": "Døgnvill Burger Stavanger",
+        "formatted_address": "Skagen 13, 4006 Stavanger, Norway",
+        "rating": 4.5,
+        "types": "bar, restaurant, food, point_of_interest, establishment, "
     },
     {
         "geometry": {
-            "location": {lat: 58.970135, lng: 5.736521}
+            "location": {"lat": 58.970818, "lng": 5.735233}
         },
-        "name": 'Thai Nong Khai As',
-        "formatted_address": 'Smedgata 7, 4013 Stavanger, Norway',
-        "rating": '4.5',
-        "types": 'restaurant, food, point_of_interest, establishment,'
+        "name": "Steam Kaffebar Stavanger",
+        "formatted_address": "Klubbgata 5, 4013 Stavanger, Norway",
+        "rating": 4.4,
+        "types": "cafe, food, store, point_of_interest, establishment,"
     },
     {
         "geometry": {
-            "location": {lat: 58.971349, lng: 5.738650}
+            "location": {"lat": 58.970135, "lng": 5.736521}
         },
-        "name": 'Mogul India Restaurant',
-        "formatted_address": 'Verksgata 9, 4013 Stavanger, Norway',
-        "rating": '4.6',
-        "types": 'restaurant, food, point_of_interest, establishment,'
+        "name": "Thai Nong Khai As",
+        "formatted_address": "Smedgata 7, 4013 Stavanger, Norway",
+        "rating": 4.5,
+        "types": "restaurant, food, point_of_interest, establishment,"
     },
     {
         "geometry": {
-            "location": {lat: 58.972237, lng: 5.732062}
+            "location": {"lat": 58.971349, "lng": 5.738650}
         },
-        "name": 'Delhi Bar & Restaurant',
-        "formatted_address": 'Kirkegata 36, 4006 Stavanger, Norway',
-        "rating": '3.9',
-        "types": 'restaurant, bar, food, point_of_interest, establishment,'
+        "name": "Mogul India Restaurant",
+        "formatted_address": "Verksgata 9, 4013 Stavanger, Norway",
+        "rating": "4.6",
+        "types": "restaurant, food, point_of_interest, establishment,"
     },
     {
         "geometry": {
-            "location": {lat: 58.969254, lng: 5.727093}
+            "location": {"lat": 58.972237, "lng": 5.732062}
         },
-        "name": 'Comfort Hotel Square',
-        "formatted_address": 'Løkkeveien 41, 4008 Stavanger, Norway',
-        "rating": '4.2',
-        "types": 'lodging, point_of_interest, establishment,'
+        "name": "Delhi Bar & Restaurant",
+        "formatted_address": "Kirkegata 36, 4006 Stavanger, Norway",
+        "rating": 3.9,
+        "types": "restaurant, bar, food, point_of_interest, establishment,"
     },
     {
         "geometry": {
-            "location": {lat: 58.970708, lng: 5.744269}
+            "location": {"lat": 58.969254, "lng": 5.727093}
         },
-        "name": 'Scandic Stavanger City Hotel',
-        "formatted_address": 'Reidar Berges Gate 7, 4013 Stavanger, Norway',
-        "rating": '4.2',
-        "types": 'lodging, point_of_interest, establishment,'
+        "name": "Comfort Hotel Square",
+        "formatted_address": "Løkkeveien 41, 4008 Stavanger, Norway",
+        "rating": 4.2,
+        "types": "lodging, point_of_interest, establishment,"
     },
     {
         "geometry": {
-            "location": {lat: 58.971122, lng: 5.735619}
+            "location": {"lat": 58.970708, "lng": 5.744269}
         },
-        "name": 'Myhregaarden Hotel',
-        "formatted_address": 'Nygata 24, 4006 Stavanger, Norway',
-        "rating": '3.6',
-        "types": 'lodging, point_of_interest, establishment, '
+        "name": "Scandic Stavanger City Hotel",
+        "formatted_address": "Reidar Berges Gate 7, 4013 Stavanger, Norway",
+        "rating": 4.2,
+        "types": "lodging, point_of_interest, establishment,"
     },
     {
         "geometry": {
-            "location": {lat: 58.970747, lng: 5.735958}
+            "location": {"lat": 58.971122, "lng": 5.735619}
         },
-        "name": 'Arkaden Torgterrassen',
-        "formatted_address": 'Klubbgata 5, 4013 Stavanger, Norway',
-        "rating": '3.9',
-        "types": 'shopping_mall, point_of_interest, establishment, '
+        "name": "Myhregaarden Hotel",
+        "formatted_address": "Nygata 24, 4006 Stavanger, Norway",
+        "rating": 3.6,
+        "types": "lodging, point_of_interest, establishment, "
     },
     {
         "geometry": {
-            "location": {lat: 58.969797, lng: 5.728003}
+            "location": {"lat": 58.970747, "lng": 5.735958}
         },
-        "name": 'Straen Senteret',
-        "formatted_address": 'Lars Hertervigs gate 6, 4005 Stavanger, Norway',
-        "rating": '3.8',
-        "types": 'shopping_mall, point_of_interest, establishment, '
+        "name": "Arkaden Torgterrassen",
+        "formatted_address": "Klubbgata 5, 4013 Stavanger, Norway",
+        "rating": 3.9,
+        "types": "shopping_mall, point_of_interest, establishment, "
     },
     {
         "geometry": {
-            "location": {lat: 58.971772, lng: 5.737264}
+            "location": {"lat": 58.969797, "lng": 5.728003}
         },
-        "name": 'Magasinblaa',
-        "formatted_address": 'Verksgata 2, 4013 Stavanger, Norway',
-        "rating": '3.8',
-        "types": 'shopping_mall, point_of_interest, establishment, '
+        "name": "Straen Senteret",
+        "formatted_address": "Lars Hertervigs gate 6, 4005 Stavanger, Norway",
+        "rating": 3.8,
+        "types": "shopping_mall, point_of_interest, establishment, "
+    },
+    {
+        "geometry": {
+            "location": {"lat": 58.971772, "lng": 5.737264}
+        },
+        "name": "Magasinblaa",
+        "formatted_address": "Verksgata 2, 4013 Stavanger, Norway",
+        "rating": 3.8,
+        "types": "shopping_mall, point_of_interest, establishment, "
     }
 ];
 
@@ -159,8 +158,6 @@ class ViewModel {
         self.locationVisible = ko.observable(true);
 
 
-
-
         self.toggleMenu = () => {
             this.menuVisible(!this.menuVisible());
         };
@@ -198,27 +195,27 @@ class ViewModel {
                 location.marker.setMap(null);
 
                 //if all is selected, make everything visible
-                if(this.filterAll()) {
+                if (this.filterAll()) {
                     location.locationVisible(true);
                     location.marker.setMap(map);
                 }
-                else if(this.filterEatDrink()) {
+                else if (this.filterEatDrink()) {
                     //check if location category contains word 'food', if so - show
-                    if(category.includes('food')) {
+                    if (category.includes('food')) {
                         location.locationVisible(true);
                         location.marker.setMap(map);
                     }
                 }
-                else if(this.filterShopping()) {
+                else if (this.filterShopping()) {
                     //check if location category contains word 'shopping_mall', if so - show
-                    if(category.includes('shopping_mall')) {
+                    if (category.includes('shopping_mall')) {
                         location.locationVisible(true);
                         location.marker.setMap(map);
                     }
                 }
-                else if(this.filterHotel()) {
+                else if (this.filterHotel()) {
                     //check if location category contains word 'lodging', if so - show
-                    if(category.includes('lodging')) {
+                    if (category.includes('lodging')) {
                         location.locationVisible(true);
                         location.marker.setMap(map);
                     }
@@ -333,7 +330,7 @@ function queryGoogleMaps(query) {
 function callbackGoogleMaps(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         for (let i = 0; i < results.length; i++) {
-        //manipulate the object so it's easier to instantiate
+            //manipulate the object so it's easier to instantiate
             let types = '';
             let locationIsUnique = true;
 
@@ -346,12 +343,12 @@ function callbackGoogleMaps(results, status) {
 
             //check that location already doesn't exist
             viewModel.locationList().forEach((item) => {
-                if(item.name === results[i].name) {
+                if (item.name === results[i].name) {
                     locationIsUnique = false;
                 }
             });
 
-            if(locationIsUnique) {
+            if (locationIsUnique) {
                 new Location(results[i]);
             }
         }
@@ -370,26 +367,32 @@ function queryFourSquare(locationObject) {
 
     $.ajax({
         url: FULL_SEARCH_STRING,
+        //QUESTION FOR REVIEWER - context appears to only make the locationObject available in the .done function -
+        //how can i pass it to the .fail method?
         context: locationObject
     })
         .done(function (data) {
 
-            // this.phone = 'No data available';
-            this.url = 'No data available';
+            //QUESTION FOR REVIEWER - I dont understand FourSquare api. You would think that in every successful .done
+            // return the values phone and url would display something different than undefined. But if i search for, say
+            // "boat" and look at the replies, they vary widly between a real value, undefined and 'No data available'. Why?
 
-            // if(undefined !== data.response.venues[0].contact.formattedPhone) {
-            //     this.phone = data.response.venues[0].contact.formattedPhone;
-            // }
-
-            if(data.response.venues[0].url) {
-                this.url = data.response.venues[0].url;
+            try {
+                this.phone = data.response.venues[0].contact.formattedPhone;
+            } catch (e) {
+                this.phone = 'No data available';
             }
 
-        }) //todo: get context for .fail
+            try {
+                this.url = data.response.venues[0].url;
+            } catch (e) {
+                this.url = 'No data available';
+            }
+
+        })
         .fail((message) => {
 
-            if(message.status === 429) {
-                debugger;
+            if (message.status === 429) {
                 this.phone = 'No data available - data limit reached';
                 this.url = 'No data available - data limit reached';
             } else {
