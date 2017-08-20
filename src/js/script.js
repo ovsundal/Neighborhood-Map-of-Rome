@@ -415,6 +415,8 @@ function queryFourSquare(locationObject) {
             try {
                 this.url = data.response.venues[0].url ?
                     this.url = data.response.venues[0].url : this.url = 'No data available';
+            } catch (e) {
+                this.phone = 'No data available';
             }
         })
         .fail((message) => {
