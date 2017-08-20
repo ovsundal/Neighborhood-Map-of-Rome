@@ -225,32 +225,32 @@ class ViewModel {
 
                 let category = location.types;
                 location.locationVisible(false);
-                location.marker.setMap(null);
+                location.marker.setVisible(false);
 
                 //if all is selected, make everything visible
                 if (this.filterAll()) {
                     location.locationVisible(true);
-                    location.marker.setMap(map);
+                    location.marker.setVisible(true);
                 }
                 else if (this.filterEatDrink()) {
                     //check if location category contains word 'food', if so - show
                     if (category.includes('food')) {
                         location.locationVisible(true);
-                        location.marker.setMap(map);
+                        location.marker.setVisible(true);
                     }
                 }
                 else if (this.filterShopping()) {
                     //check if location category contains word 'shopping_mall', if so - show
                     if (category.includes('shopping_mall')) {
                         location.locationVisible(true);
-                        location.marker.setMap(map);
+                        location.marker.setVisible(true);
                     }
                 }
                 else if (this.filterHotel()) {
                     //check if location category contains word 'lodging', if so - show
                     if (category.includes('lodging')) {
                         location.locationVisible(true);
-                        location.marker.setMap(map);
+                        location.marker.setVisible(true);
                     }
                 } else;
             })
