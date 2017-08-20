@@ -392,7 +392,7 @@ function queryFourSquare(locationObject) {
         url: FULL_SEARCH_STRING,
         context: locationObject
     })
-        .always(function (cb) {
+        .always((cb) => {
             try {
                 cb.response.venues[0].contact.formattedPhone ?
                     this.phone = cb.response.venues[0].contact.formattedPhone : this.phone = 'No data available';
@@ -405,7 +405,10 @@ function queryFourSquare(locationObject) {
             } catch (e) {
                 this.url = 'No data available';
             }
-        })
+        });
+        .fail(() => {
+        alert('Error, could not download data from FourSquare');
+    });
 }
 
 function populateInitialLocations() {
