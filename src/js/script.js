@@ -464,6 +464,9 @@ function setInfoWindowAndTriggerBounce() {
     } else {
         viewModel.currentLocation().marker.setAnimation(google.maps.Animation.BOUNCE);
     }
+
+    //zoom to clicked marker
+    map.panTo(viewModel.currentLocation().marker.getPosition());
 }
 
 function buildContentStringForInfoWindow(location) {
