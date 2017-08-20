@@ -405,7 +405,7 @@ function queryFourSquare(locationObject) {
             } catch (e) {
                 this.url = 'No data available';
             }
-        });
+        })
         .fail(() => {
         alert('Error, could not download data from FourSquare');
     });
