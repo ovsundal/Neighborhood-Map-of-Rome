@@ -5,6 +5,7 @@ let viewModel;
 let infoWindow;
 let currentMarker;
 let service;
+let warnedUserOfApiCallbackError = false;
 
 const initialLocations = [
     {
@@ -406,11 +407,16 @@ function queryFourSquare(locationObject) {
                 this.url = 'No data available';
             }
         })
-        .fail(function(cb) {
+        .fail(function() {
+            //improve UX by only alerting user of API fail once
+            if(!warnedUserOfApiCallbackError) {
+                alert('Error, could not get data from foursquare');
+                warnedUserOfApiCallbackError = true;
+            }
+
             this.phone = 'Could not retrieve data';
             this.url = 'Could not retrieve data';
     });
-
 }
 
 function populateInitialLocations() {
