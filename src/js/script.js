@@ -401,8 +401,6 @@ function queryFourSquare(locationObject) {
 
     $.ajax({
         url: FULL_SEARCH_STRING,
-        //QUESTION FOR REVIEWER - context appears to only make the locationObject available in the .done function -
-        //how can i pass it to the .fail method?
         context: locationObject
     })
         .done(function (data) {
@@ -413,16 +411,23 @@ function queryFourSquare(locationObject) {
 
             try {
                 this.phone = data.response.venues[0].contact.formattedPhone;
+
+                if(!data.response.venues[0].contact.formattedPhone) {
+                    this.phone = 'No data available';
+                }
             } catch (e) {
                 this.phone = 'No data available';
             }
 
             try {
                 this.url = data.response.venues[0].url;
+
+                if(!data.response.venues[0].url) {
+                    this.url = 'No data available';
+                }
             } catch (e) {
                 this.url = 'No data available';
             }
-
         })
         .fail((message) => {
 
