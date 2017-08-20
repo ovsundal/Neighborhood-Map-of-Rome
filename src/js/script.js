@@ -405,28 +405,16 @@ function queryFourSquare(locationObject) {
     })
         .done(function (data) {
 
-            //QUESTION FOR REVIEWER - I dont understand FourSquare api. You would think that in every successful .done
-            // return the values phone and url would display something different than undefined. But if i search for, say
-            // "boat" and look at the replies, they vary widly between a real value, undefined and 'No data available'. Why?
-
             try {
-                this.phone = data.response.venues[0].contact.formattedPhone;
-
-                if(!data.response.venues[0].contact.formattedPhone) {
-                    this.phone = 'No data available';
-                }
+                data.response.venues[0].contact.formattedPhone ?
+                    this.phone = data.response.venues[0].contact.formattedPhone : this.phone = 'No data available';
             } catch (e) {
                 this.phone = 'No data available';
             }
 
             try {
-                this.url = data.response.venues[0].url;
-
-                if(!data.response.venues[0].url) {
-                    this.url = 'No data available';
-                }
-            } catch (e) {
-                this.url = 'No data available';
+                this.url = data.response.venues[0].url ?
+                    this.url = data.response.venues[0].url : this.url = 'No data available';
             }
         })
         .fail((message) => {
