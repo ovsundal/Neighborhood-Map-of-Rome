@@ -34,7 +34,7 @@
         <i class="fa fa-undo" aria-hidden="true"></i></button>
 
 
-    <div id="filter-dropdown-list" class="w3-dropdown-content w3-bar-block floating-panel">
+    <aside id="filter-dropdown-list" class="w3-dropdown-content w3-bar-block floating-panel">
         <a class="w3-bar-item w3-button"><u>Filter by:</u></a>
         <a data-bind="click: toggleFilterAll, css: { filtering: filterAll() == true }" href="#"
            class="w3-bar-item w3-button ">All</a>
@@ -44,10 +44,10 @@
            class="w3-bar-item w3-button">Shopping</a>
         <a data-bind="click: toggleFilterHotel, css: { filtering: filterHotel() == true }" href="#"
            class="w3-bar-item w3-button">Hotel</a>
-    </div>
+    </aside>
 
     <!-- Sidebar -->
-    <div id="sidebar-wrapper">
+    <aside id="sidebar-wrapper">
         <!--search bar added as <li> so it will use same css as the rest of the list-->
         <ul class="sidebar-nav">
             <li><input data-bind="textInput: searchBarText"
@@ -57,17 +57,17 @@
             <li data-bind="text: name, click: $parent.setLocation, visible: locationVisible() == true"></li>
             <hr>
         </ul>
-    </div>
+    </aside>
     <!-- /#sidebar-wrapper -->
 
     <!-- Page Content -->
-    <div id="page-content-wrapper">
+    <article id="page-content-wrapper">
         <div class="container-fluid">
             <div class="row">
                 <div id="map" class="col-lg-12"></div>
             </div>
         </div>
-    </div>
+    </article>
     <!-- /#page-content-wrapper -->
 </div>
 <!-- /#wrapper -->
