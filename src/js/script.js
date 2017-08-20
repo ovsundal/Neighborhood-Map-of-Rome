@@ -381,8 +381,8 @@ function callbackGoogleMaps(results, status) {
 function queryFourSquare(locationObject) {
 
     const URL = 'https://api.foursquare.com/v2/venues/search?';
-    const CLIENT_ID = 'client_id=13H0KQ15M5RIOAEHKB11UVWGJMSLDD3GJE2WHNZYZGY2WWLT';
-    const CLIENT_SECRET = '&client_secret=D0FE0QLWIPPSTJEETRUM0IKURTWV1XD5W1WDTW20C5KW33OZ';
+    const CLIENT_ID = 'client_id=H0DPCUF1O2QSSN5ROACITLMGVXAKHEBQKHP3ZUIGA52SO0MN';
+    const CLIENT_SECRET = '&client_secret=RFM11R3CXO2JQPO305ZQP25E3OIEXRS2TNTOBSEDVAB5C1J4';
     const DATE = '&v=20170818';
     const LATLNG = '&ll=58.97,5.73';
     const QUERY = '&query=' + locationObject.name;
