@@ -273,7 +273,7 @@ class ViewModel {
 
         self.toggleFilterMenu = () => {
             // from https://www.w3schools.com/w3css/w3css_dropdowns.asp
-            let x = document.getElementById("Demo");
+            let x = document.getElementById("filter-dropdown-list");
             if (x.className.indexOf("w3-show") == -1) {
                 x.className += " w3-show";
             } else {
