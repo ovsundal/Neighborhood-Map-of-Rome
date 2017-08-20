@@ -151,22 +151,20 @@ class ViewModel {
         self.menuVisible = ko.observable(true);
         self.searchBarText = ko.observable("");
         self.locationList = ko.observableArray([]);
+        self.currentLocation = ko.observable(self.locationList()[0]);
         self.filterAll = ko.observable(true);
         self.filterEatDrink = ko.observable(false);
         self.filterShopping = ko.observable(false);
         self.filterHotel = ko.observable(false);
         self.locationVisible = ko.observable(true);
 
-
         self.toggleMenu = () => {
             this.menuVisible(!this.menuVisible());
         };
-
-
         self.toggleFilterAll = () => {
 
             //make sure only one filter can be active at a time
-            if(!this.filterAll()) {
+            if (!this.filterAll()) {
                 this.filterAll(!this.filterAll());
                 this.filterEatDrink(false);
                 this.filterShopping(false);
@@ -176,10 +174,9 @@ class ViewModel {
             }
             self.applyFilter();
         };
-
         self.toggleFilterEatDrink = () => {
 
-            if(!this.filterEatDrink()) {
+            if (!this.filterEatDrink()) {
                 this.filterEatDrink(!this.filterEatDrink());
                 this.filterAll(false);
                 this.filterShopping(false);
@@ -189,10 +186,9 @@ class ViewModel {
             }
             self.applyFilter();
         };
-
         self.toggleFilterShopping = () => {
 
-            if(!this.filterShopping()) {
+            if (!this.filterShopping()) {
                 this.filterShopping(!this.filterShopping());
                 this.filterAll(false);
                 this.filterEatDrink(false);
@@ -202,10 +198,9 @@ class ViewModel {
             }
             self.applyFilter();
         };
-
         self.toggleFilterHotel = () => {
 
-            if(!this.filterHotel()) {
+            if (!this.filterHotel()) {
                 this.filterHotel(!this.filterHotel());
                 this.filterAll(false);
                 this.filterEatDrink(false);
@@ -215,7 +210,6 @@ class ViewModel {
             }
             self.applyFilter();
         };
-
         self.applyFilter = () => {
 
             self.locationList().forEach((location) => {
@@ -255,9 +249,6 @@ class ViewModel {
                 } else;
             })
         };
-
-        self.currentLocation = ko.observable(self.locationList()[0]);
-
         self.setLocation = (clickedLocation) => {
 
             for (let i = 0; i < self.locationList().length; i++) {
@@ -270,7 +261,6 @@ class ViewModel {
                 }
             }
         };
-
         self.toggleFilterMenu = () => {
             // from https://www.w3schools.com/w3css/w3css_dropdowns.asp
             let x = document.getElementById("filter-dropdown-list");
@@ -280,7 +270,6 @@ class ViewModel {
                 x.className = x.className.replace(" w3-show", "");
             }
         };
-
         self.resetList = () => {
             //remove markers
             self.locationList().forEach((item) => {
@@ -403,32 +392,20 @@ function queryFourSquare(locationObject) {
         url: FULL_SEARCH_STRING,
         context: locationObject
     })
-        .done(function (data) {
-
+        .always(function (cb) {
             try {
-                data.response.venues[0].contact.formattedPhone ?
-                    this.phone = data.response.venues[0].contact.formattedPhone : this.phone = 'No data available';
+                cb.response.venues[0].contact.formattedPhone ?
+                    this.phone = cb.response.venues[0].contact.formattedPhone : this.phone = 'No data available';
             } catch (e) {
                 this.phone = 'No data available';
             }
-
             try {
-                this.url = data.response.venues[0].url ?
-                    this.url = data.response.venues[0].url : this.url = 'No data available';
+                this.url = cb.response.venues[0].url ?
+                    this.url = cb.response.venues[0].url : this.url = 'No data available';
             } catch (e) {
-                this.phone = 'No data available';
+                this.url = 'No data available';
             }
         })
-        .fail((message) => {
-
-            if (message.status === 429) {
-                this.phone = 'No data available - data limit reached';
-                this.url = 'No data available - data limit reached';
-            } else {
-                this.phone = 'Could not load data';
-                this.url = 'Could not load data';
-            }
-        });
 }
 
 function populateInitialLocations() {
