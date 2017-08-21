@@ -147,22 +147,20 @@ class Location {
 class ViewModel {
     constructor() {
 
-        let self = this;
+        this.menuVisible = ko.observable(true);
+        this.searchBarText = ko.observable("");
+        this.locationList = ko.observableArray([]);
+        this.currentLocation = ko.observable(this.locationList()[0]);
+        this.filterAll = ko.observable(true);
+        this.filterEatDrink = ko.observable(false);
+        this.filterShopping = ko.observable(false);
+        this.filterHotel = ko.observable(false);
+        this.locationVisible = ko.observable(true);
 
-        self.menuVisible = ko.observable(true);
-        self.searchBarText = ko.observable("");
-        self.locationList = ko.observableArray([]);
-        self.currentLocation = ko.observable(self.locationList()[0]);
-        self.filterAll = ko.observable(true);
-        self.filterEatDrink = ko.observable(false);
-        self.filterShopping = ko.observable(false);
-        self.filterHotel = ko.observable(false);
-        self.locationVisible = ko.observable(true);
-
-        self.toggleMenu = () => {
+        this.toggleMenu = () => {
             this.menuVisible(!this.menuVisible());
         };
-        self.toggleFilterAll = () => {
+        this.toggleFilterAll = () => {
 
             //make sure only one filter can be active at a time
             if (!this.filterAll()) {
@@ -173,9 +171,9 @@ class ViewModel {
             } else {
                 this.filterAll(!this.filterAll());
             }
-            self.applyFilter();
+            this.applyFilter();
         };
-        self.toggleFilterEatDrink = () => {
+        this.toggleFilterEatDrink = () => {
 
             if (!this.filterEatDrink()) {
                 this.filterEatDrink(!this.filterEatDrink());
@@ -185,9 +183,9 @@ class ViewModel {
             } else {
                 this.filterEatDrink(!this.filterEatDrink());
             }
-            self.applyFilter();
+            this.applyFilter();
         };
-        self.toggleFilterShopping = () => {
+        this.toggleFilterShopping = () => {
 
             if (!this.filterShopping()) {
                 this.filterShopping(!this.filterShopping());
@@ -197,9 +195,9 @@ class ViewModel {
             } else {
                 this.filterShopping(!this.filterShopping());
             }
-            self.applyFilter();
+            this.applyFilter();
         };
-        self.toggleFilterHotel = () => {
+        this.toggleFilterHotel = () => {
 
             if (!this.filterHotel()) {
                 this.filterHotel(!this.filterHotel());
@@ -209,11 +207,11 @@ class ViewModel {
             } else {
                 this.filterHotel(!this.filterHotel());
             }
-            self.applyFilter();
+            this.applyFilter();
         };
-        self.applyFilter = () => {
+        this.applyFilter = () => {
 
-            self.locationList().forEach((location) => {
+            this.locationList().forEach((location) => {
 
                 //all items starts of not shown. If any filters are toggled, see if location.type string matches
                 //any items in the filterlist. If so, set it visible
@@ -250,19 +248,19 @@ class ViewModel {
                 } else;
             })
         };
-        self.setLocation = (clickedLocation) => {
+        this.setLocation = (clickedLocation) => {
 
-            for (let i = 0; i < self.locationList().length; i++) {
+            for (let i = 0; i < this.locationList().length; i++) {
                 //search for location clicked in observable array
-                if (clickedLocation === self.locationList()[i]) {
+                if (clickedLocation === this.locationList()[i]) {
 
                     //set the found location as new current location
-                    self.currentLocation = ko.observable(self.locationList()[i]);
+                    this.currentLocation = ko.observable(this.locationList()[i]);
                     setInfoWindowAndTriggerBounce();
                 }
             }
         };
-        self.toggleFilterMenu = () => {
+        this.toggleFilterMenu = () => {
             // from https://www.w3schools.com/w3css/w3css_dropdowns.asp
             let x = document.getElementById("filter-dropdown-list");
             if (x.className.indexOf("w3-show") == -1) {
@@ -271,13 +269,13 @@ class ViewModel {
                 x.className = x.className.replace(" w3-show", "");
             }
         };
-        self.resetList = () => {
+        this.resetList = () => {
             //remove markers
-            self.locationList().forEach((item) => {
+            this.locationList().forEach((item) => {
                 item.marker.setMap(null);
             });
 
-            self.locationList.removeAll();
+            this.locationList.removeAll();
 
             populateInitialLocations();
         }
